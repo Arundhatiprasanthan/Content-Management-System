@@ -1,11 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const articleRoutes = require('./routes/articleRoutes');
+const quizRoutes = require('./routes/quizRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 
@@ -14,8 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Mount Article Routes
+// Mount API Routes
 app.use('/api/articles', articleRoutes);
+app.use('/api/quizzes', quizRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

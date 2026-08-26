@@ -1,0 +1,464 @@
+.author-page {
+  min-height: 100vh;
+  background: #f8f5f0;
+  color: #172d21;
+}
+
+/* =========================
+   TOP NAVIGATION
+========================= */
+
+.top-nav {
+  height: 48px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 34px;
+  box-sizing: border-box;
+
+  background: #faf8f4;
+  border-bottom: 1px solid #ddd8d0;
+}
+
+/* Logo */
+
+.brand {
+  width: 28%;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #17271f;
+}
+
+.brand-icon {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 4px;
+
+  background: #1c4931;
+  color: #ffffff;
+
+  font-size: 11px;
+}
+
+/* Navigation */
+
+.main-nav {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+}
+
+.main-nav button {
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 6px;
+
+  padding: 0 11px;
+
+  background: transparent;
+
+  color: #6d6962;
+
+  font-size: 10px;
+  font-weight: 400;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+.main-nav button:hover {
+  color: #1c4931;
+}
+
+.main-nav button.active {
+  background: #1c4931;
+  color: #ffffff;
+}
+
+/* Right side */
+
+.user-section {
+  width: 28%;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 11px;
+}
+
+.user-section select {
+  height: 27px;
+
+  min-width: 135px;
+
+  padding: 0 10px;
+
+  border: 1px solid #d3cec5;
+  border-radius: 6px;
+
+  background: #eeeae2;
+
+  color: #38352f;
+
+  font-size: 9px;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+.notification {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #70695f;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+.avatar {
+  width: 25px;
+  height: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #19472f;
+  color: #ffffff;
+
+  font-size: 8px;
+  font-weight: 600;
+}
+
+/* =========================
+   MAIN PAGE
+========================= */
+
+.article-container {
+  width: 530px;
+  max-width: calc(100% - 40px);
+
+  margin: 25px auto 35px;
+}
+
+/* =========================
+   PAGE HEADING
+========================= */
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 17px;
+}
+
+.page-heading h1 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 20px;
+  line-height: 1.2;
+
+  font-weight: 600;
+
+  color: #111f18;
+}
+
+.page-heading p {
+  margin: 4px 0 0;
+
+  font-size: 10px;
+  line-height: 1.4;
+
+  color: #958e83;
+}
+
+.cancel-button {
+  border: none;
+  background: transparent;
+
+  color: #756c62;
+
+  font-size: 10px;
+
+  cursor: pointer;
+
+  margin-top: 3px;
+}
+
+/* =========================
+   COMMON CARD
+========================= */
+
+.article-card {
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid #ddd8cf;
+  border-radius: 7px;
+
+  padding: 14px;
+
+  box-sizing: border-box;
+
+  margin-bottom: 15px;
+}
+
+.article-card label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #1c2921;
+
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* =========================
+   TITLE CARD
+========================= */
+
+.title-card {
+  padding: 14px;
+}
+
+.title-card input {
+  width: 100%;
+  height: 29px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d5cfc5;
+  border-radius: 5px;
+
+  background: #eeeae2;
+
+  padding: 0 9px;
+
+  font-size: 11px;
+
+  color: #34312d;
+
+  outline: none;
+}
+
+.title-card input::placeholder,
+.form-group input::placeholder,
+.content-group textarea::placeholder {
+  color: #a39c91;
+}
+
+/* =========================
+   CATEGORY / TAGS / CONTENT
+========================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  height: 27px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d5cfc5;
+  border-radius: 5px;
+
+  background: #eeeae2;
+
+  padding: 0 8px;
+
+  font-size: 10px;
+
+  color: #38352f;
+
+  outline: none;
+}
+
+.content-group {
+  margin-top: 1px;
+}
+
+.content-group textarea {
+  width: 100%;
+  height: 160px;
+
+  box-sizing: border-box;
+
+  resize: none;
+
+  border: 1px solid #d5cfc5;
+  border-radius: 5px;
+
+  background: #eeeae2;
+
+  padding: 11px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+
+  line-height: 1.5;
+
+  color: #38352f;
+
+  outline: none;
+}
+
+.content-group textarea:focus,
+.title-card input:focus,
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #9d968b;
+}
+
+/* =========================
+   QUIZ AREA
+========================= */
+
+.quiz-creator {
+  margin-top: 0;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.article-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+
+  margin-top: 12px;
+}
+
+.save-button,
+.submit-button {
+  height: 27px;
+
+  border-radius: 5px;
+
+  padding: 0 13px;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.save-button {
+  border: 1px solid #d7d0c6;
+
+  background: #ffffff;
+
+  color: #514c45;
+}
+
+.submit-button {
+  border: none;
+
+  background: #a8b3aa;
+
+  color: #ffffff;
+}
+
+.submit-button:hover {
+  background: #19472f;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+  .top-nav {
+    height: 46px;
+    padding: 0 15px;
+  }
+
+  .brand {
+    width: auto;
+  }
+
+  .main-nav {
+    gap: 3px;
+    margin-left: 10px;
+  }
+
+  .main-nav button {
+    padding: 0 6px;
+    font-size: 9px;
+  }
+
+  .user-section {
+    width: auto;
+  }
+
+  .user-section select {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .main-nav button {
+    font-size: 0;
+  }
+
+  .main-nav button.active {
+    font-size: 9px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .article-actions {
+    flex-direction: column;
+  }
+
+  .save-button,
+  .submit-button {
+    width: 100%;
+  }
+}

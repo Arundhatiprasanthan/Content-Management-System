@@ -4,39 +4,73 @@ import StatusBadge from "../components/StatusBadge";
 function AdminDashboard() {
   return (
     <AdminLayout>
-      <div>
-        <h1>Admin Dashboard</h1>
-        <p>Review and manage submitted content.</p>
+      <div className="dashboard-page">
 
-        <div>
+        {/* Dashboard Header */}
+        <div className="dashboard-header">
           <div>
-            <h2>Pending Review</h2>
-            <p>0</p>
-          </div>
-
-          <div>
-            <h2>Changes Requested</h2>
-            <p>0</p>
-          </div>
-
-          <div>
-            <h2>Published</h2>
-            <p>0</p>
-          </div>
-
-          <div>
-            <h2>Rejected</h2>
-            <p>0</p>
+            <h1>Admin Dashboard</h1>
+            <p>Review and manage submitted content.</p>
           </div>
         </div>
 
-        <section>
-          <h2>Review Queue</h2>
+        {/* Statistics */}
+        <div className="dashboard-stats">
 
-          <div>
-            <p>No articles pending review.</p>
+          <div className="dashboard-stat-card pending">
+            <div className="stat-icon">◷</div>
+            <div className="stat-number">0</div>
+            <div className="stat-label">Pending Review</div>
           </div>
+
+          <div className="dashboard-stat-card changes">
+            <div className="stat-icon">↻</div>
+            <div className="stat-number">0</div>
+            <div className="stat-label">Changes Requested</div>
+          </div>
+
+          <div className="dashboard-stat-card published">
+            <div className="stat-icon">✓</div>
+            <div className="stat-number">0</div>
+            <div className="stat-label">Published</div>
+          </div>
+
+          <div className="dashboard-stat-card rejected">
+            <div className="stat-icon">×</div>
+            <div className="stat-number">0</div>
+            <div className="stat-label">Rejected</div>
+          </div>
+
+        </div>
+
+        {/* Review Queue */}
+        <section className="dashboard-review-section">
+
+          <div className="section-heading">
+            <h2>Review Queue</h2>
+            <span className="queue-count">0</span>
+          </div>
+
+          <div className="review-queue-box">
+
+            <div className="empty-review">
+
+              <div className="empty-icon">
+                ▧
+              </div>
+
+              <h3>No articles pending review</h3>
+
+              <p>
+                Submitted articles will appear here for review.
+              </p>
+
+            </div>
+
+          </div>
+
         </section>
+
       </div>
     </AdminLayout>
   );

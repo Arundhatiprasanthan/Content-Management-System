@@ -5,6 +5,9 @@ import QuizCreator from "./pages/author/QuizCreator";
 
 import QuizAttempt from "./pages/reader/QuizAttempt";
 import QuizResult from "./pages/reader/QuizResult";
+import Home from "./pages/reader/Home/Home";
+import Browse from "./pages/reader/Browse/Browse";
+import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
 
 function App() {
   return (
@@ -23,6 +26,13 @@ function App() {
         />
 
         {/* Reader */}
+
+        <Route path="/home" element={<Home/>}/>
+
+        <Route path="/browse" element={<Browse/>}/>
+
+        <Route path="/article/:id" element={<ArticleDetails/>}/>
+        
         <Route
           path="/quiz"
           element={<QuizAttempt />}

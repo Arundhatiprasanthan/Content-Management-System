@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AdminLayout from "../components/AdminLayout";
 
 function AdminNotifications() {
   const [notifications, setNotifications] = useState([
@@ -9,6 +10,8 @@ function AdminNotifications() {
         "John Doe submitted 'The Future of Artificial Intelligence' for review.",
       time: "10 minutes ago",
       read: false,
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=300&q=80",
     },
     {
       id: 2,
@@ -17,6 +20,8 @@ function AdminNotifications() {
         "The article 'Climate Change and Our Future' has been published.",
       time: "2 hours ago",
       read: false,
+      image:
+        "https://images.unsplash.com/photo-1569511166187-97eb6e387e19?auto=format&fit=crop&w=300&q=80",
     },
     {
       id: 3,
@@ -25,6 +30,8 @@ function AdminNotifications() {
         "The article 'Understanding Modern History' was rejected.",
       time: "Yesterday",
       read: true,
+      image:
+        "https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=300&q=80",
     },
     {
       id: 4,
@@ -33,6 +40,8 @@ function AdminNotifications() {
         "Changes were requested for 'The Future of Healthcare'.",
       time: "Yesterday",
       read: true,
+      image:
+        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=300&q=80",
     },
   ]);
 
@@ -41,8 +50,8 @@ function AdminNotifications() {
   ).length;
 
   const markAsRead = (id) => {
-    setNotifications((currentNotifications) =>
-      currentNotifications.map((notification) =>
+    setNotifications((current) =>
+      current.map((notification) =>
         notification.id === id
           ? { ...notification, read: true }
           : notification
@@ -51,8 +60,8 @@ function AdminNotifications() {
   };
 
   const markAllAsRead = () => {
-    setNotifications((currentNotifications) =>
-      currentNotifications.map((notification) => ({
+    setNotifications((current) =>
+      current.map((notification) => ({
         ...notification,
         read: true,
       }))
@@ -60,106 +69,118 @@ function AdminNotifications() {
   };
 
   return (
-    <div className="admin-page">
+    <AdminLayout>
+      <div className="admin-page">
 
-      {/* Page Header */}
+        <section className="page-heading notification-heading">
 
-      <div className="admin-page-header notification-header">
+          <div>
+            <h1>Notifications</h1>
 
-        <div>
-          <h1>Notifications</h1>
-
-          <p>
-            Stay updated with important content activities.
-          </p>
-        </div>
-
-        {unreadCount > 0 && (
-          <button
-            className="mark-all-button"
-            onClick={markAllAsRead}
-          >
-            Mark all as read
-          </button>
-        )}
-
-      </div>
-
-      {/* Notification Summary */}
-
-      <div className="notification-summary">
-
-        <span>
-          {unreadCount} unread notification
-          {unreadCount !== 1 ? "s" : ""}
-        </span>
-
-      </div>
-
-      {/* Notifications */}
-
-      <div className="notifications-list">
-
-        {notifications.length === 0 ? (
-          <div className="notifications-empty">
-            <h3>No notifications</h3>
             <p>
-              You don't have any notifications at the moment.
+              Stay updated with important content activities.
             </p>
           </div>
-        ) : (
-          notifications.map((notification) => (
 
-            <div
-              key={notification.id}
-              className={`notification-card ${
-                notification.read ? "read" : "unread"
-              }`}
+          {unreadCount > 0 && (
+            <button
+              className="secondary-button"
+              onClick={markAllAsRead}
             >
+              Mark all as read
+            </button>
+          )}
 
-              <div className="notification-icon">
-                {notification.read ? "✓" : "!"}
+        </section>
+
+        <div className="notification-summary">
+          {unreadCount} unread notification
+          {unreadCount !== 1 ? "s" : ""}
+        </div>
+
+        <section className="notifications-list">
+
+          {notifications.length === 0 ? (
+            <div className="dashboard-empty">
+
+              <div className="empty-icon">
+                ◇
               </div>
 
-              <div className="notification-content">
+              <h3>
+                No notifications
+              </h3>
 
-                <div className="notification-title-row">
+              <p>
+                You don't have any notifications at the moment.
+              </p>
 
-                  <h3>{notification.title}</h3>
+            </div>
+          ) : (
+            notifications.map((notification) => (
+              <article
+                key={notification.id}
+                className={`notification-card ${
+                  notification.read ? "read" : "unread"
+                }`}
+              >
 
-                  {!notification.read && (
-                    <span className="unread-badge">
-                      New
-                    </span>
-                  )}
+                {/* Notification Image */}
+                <img
+                  src={notification.image}
+                  alt={notification.title}
+                  className="notification-image"
+                />
+
+                <div className="notification-icon">
+                  {notification.read ? "✓" : "!"}
+                </div>
+
+                <div className="notification-content">
+
+                  <div className="notification-title-row">
+
+                    <h3>
+                      {notification.title}
+                    </h3>
+
+                    {!notification.read && (
+                      <span className="new-badge">
+                        New
+                      </span>
+                    )}
+
+                  </div>
+
+                  <p>
+                    {notification.message}
+                  </p>
+
+                  <span className="notification-time">
+                    {notification.time}
+                  </span>
 
                 </div>
 
-                <p>{notification.message}</p>
+                {!notification.read && (
+                  <button
+                    className="text-button"
+                    onClick={() =>
+                      markAsRead(notification.id)
+                    }
+                  >
+                    Mark as read
+                  </button>
+                )}
 
-                <span className="notification-time">
-                  {notification.time}
-                </span>
+              </article>
+            ))
+          )}
 
-              </div>
-
-              {!notification.read && (
-                <button
-                  className="mark-read-button"
-                  onClick={() => markAsRead(notification.id)}
-                >
-                  Mark as read
-                </button>
-              )}
-
-            </div>
-
-          ))
-        )}
+        </section>
 
       </div>
-
-    </div>
+    </AdminLayout>
   );
 }
 

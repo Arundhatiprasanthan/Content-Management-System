@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AdminLayout from "../components/AdminLayout";
 
 function AdminProfile() {
   const [name, setName] = useState("Admin User");
@@ -11,98 +12,105 @@ function AdminProfile() {
   };
 
   return (
-    <div className="admin-page">
+    <AdminLayout>
+      <div className="admin-page">
 
-      <div className="admin-page-header">
-        <h1>Admin Profile</h1>
-        <p>View and manage your administrator profile.</p>
-      </div>
+        <section className="page-heading">
+          <h1>Admin Profile</h1>
 
-      <div className="admin-profile-card">
+          <p>
+            View and manage your administrator profile.
+          </p>
+        </section>
 
-        <div className="admin-profile-avatar">
-          {name.charAt(0).toUpperCase()}
-        </div>
+        <section className="profile-card">
 
-        <div className="admin-profile-info">
+          <div className="profile-avatar">
+            {name.charAt(0).toUpperCase()}
+          </div>
 
-          <h2>{name}</h2>
+          <div>
+            <h2>{name}</h2>
 
-          <span className="admin-role-badge">
-            Administrator
-          </span>
+            <span className="role-badge">
+              Administrator
+            </span>
+          </div>
 
-        </div>
+        </section>
 
-      </div>
+        <section className="profile-form">
 
-      <div className="admin-profile-form">
+          <div className="section-header">
+            <div>
+              <h2>Profile Information</h2>
+            </div>
+          </div>
 
-        <h2>Profile Information</h2>
+          <div className="profile-field">
+            <label>Name</label>
 
-        <div className="profile-field">
-          <label>Name</label>
+            <input
+              type="text"
+              value={name}
+              disabled={!editing}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
-          <input
-            type="text"
-            value={name}
-            disabled={!editing}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+          <div className="profile-field">
+            <label>Email</label>
 
-        <div className="profile-field">
-          <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              disabled
+            />
+          </div>
 
-          <input
-            type="email"
-            value={email}
-            disabled
-          />
-        </div>
+          <div className="profile-field">
+            <label>Role</label>
 
-        <div className="profile-field">
-          <label>Role</label>
+            <input
+              type="text"
+              value="Administrator"
+              disabled
+            />
+          </div>
 
-          <input
-            type="text"
-            value="Administrator"
-            disabled
-          />
-        </div>
+          <div className="profile-actions">
 
-        <div className="profile-actions">
-
-          {!editing ? (
-            <button
-              className="edit-profile-button"
-              onClick={() => setEditing(true)}
-            >
-              Edit Profile
-            </button>
-          ) : (
-            <>
+            {!editing ? (
               <button
-                className="cancel-profile-button"
-                onClick={() => setEditing(false)}
+                className="primary-button"
+                onClick={() => setEditing(true)}
               >
-                Cancel
+                Edit Profile
               </button>
+            ) : (
+              <>
+                <button
+                  className="secondary-button"
+                  onClick={() => setEditing(false)}
+                >
+                  Cancel
+                </button>
 
-              <button
-                className="save-profile-button"
-                onClick={handleSave}
-              >
-                Save Changes
-              </button>
-            </>
-          )}
+                <button
+                  className="primary-button"
+                  onClick={handleSave}
+                >
+                  Save Changes
+                </button>
+              </>
+            )}
 
-        </div>
+          </div>
+
+        </section>
 
       </div>
-
-    </div>
+    </AdminLayout>
   );
 }
 

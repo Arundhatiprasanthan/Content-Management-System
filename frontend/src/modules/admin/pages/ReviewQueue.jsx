@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import AdminLayout from "../components/AdminLayout";
 
 function ReviewQueue() {
   const articles = [
@@ -11,6 +12,8 @@ function ReviewQueue() {
       category: "Technology",
       readingTime: "5 min read",
       status: "Pending Review",
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: 2,
@@ -21,78 +24,121 @@ function ReviewQueue() {
       category: "Environment",
       readingTime: "7 min read",
       status: "Pending Review",
+      image:
+        "https://images.unsplash.com/photo-1569511166187-97eb6e387e19?auto=format&fit=crop&w=900&q=80",
     },
   ];
 
   return (
-    <div className="admin-page">
+    <AdminLayout>
+      <div className="admin-page">
 
-      <div className="admin-page-header">
-        <h1>Review Queue</h1>
-        <p>Review articles submitted by authors.</p>
-      </div>
+        <section className="page-heading">
+          <h1>Review Queue</h1>
+          <p>
+            Review articles submitted by authors.
+          </p>
+        </section>
 
-      <div className="review-queue">
+        <section className="content-section">
 
-        <div className="review-queue-header">
-          <h2>Pending Articles</h2>
-        </div>
-
-        <div className="review-articles">
-
-          {articles.length === 0 ? (
-            <div className="review-empty">
-              <h3>No articles pending review</h3>
-              <p>New submissions will appear here.</p>
+          <div className="section-header">
+            <div>
+              <h2>Pending Articles</h2>
+              <p>
+                Review submitted articles before publication.
+              </p>
             </div>
-          ) : (
-            articles.map((article) => (
-              <div
-                className="review-article-card"
-                key={article.id}
-              >
 
-                <div className="review-article-info">
+            <span className="section-count">
+              {articles.length}
+            </span>
+          </div>
 
-                  <div className="review-article-top">
+          <div className="review-articles">
 
-                    <span className="article-category">
-                      {article.category}
-                    </span>
-
-                    <span className="article-status">
-                      {article.status}
-                    </span>
-
-                  </div>
-
-                  <h3>{article.title}</h3>
-
-                  <p>{article.description}</p>
-
-                  <div className="review-article-meta">
-                    <span>Author: {article.author}</span>
-                    <span>{article.readingTime}</span>
-                  </div>
-
-                  <Link
-                    to={`/admin/review/${article.id}`}
-                    className="review-button"
-                  >
-                    Review Article
-                  </Link>
-
+            {articles.length === 0 ? (
+              <div className="dashboard-empty">
+                <div className="empty-icon">
+                  ◇
                 </div>
 
-              </div>
-            ))
-          )}
+                <h3>
+                  No articles pending review
+                </h3>
 
-        </div>
+                <p>
+                  New submissions will appear here.
+                </p>
+              </div>
+            ) : (
+              articles.map((article) => (
+                <article
+                  className="review-article-card"
+                  key={article.id}
+                >
+
+                  <div className="review-article-info">
+
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="review-article-image"
+                    />
+
+                    <div className="article-top-row">
+
+                      <span className="article-category">
+                        {article.category}
+                      </span>
+
+                      <span className="status-badge pending">
+                        {article.status}
+                      </span>
+
+                    </div>
+
+                    <h3>
+                      {article.title}
+                    </h3>
+
+                    <p className="article-description">
+                      {article.description}
+                    </p>
+
+                    <div className="article-meta">
+                      <span>
+                        By {article.author}
+                      </span>
+
+                      <span>
+                        {article.readingTime}
+                      </span>
+                    </div>
+
+                  </div>
+
+                  <div className="review-card-action">
+
+                    <Link
+                      to={`/admin/review/${article.id}`}
+                      className="primary-button"
+                    >
+                      Review Article
+                    </Link>
+
+                  </div>
+
+                </article>
+              ))
+            )}
+
+          </div>
+
+        </section>
 
       </div>
-
-    </div>
+    </AdminLayout>
   );
 }
 

@@ -1,3 +1,5 @@
+import AdminLayout from "../components/AdminLayout";
+
 function ContentManagement() {
   const articles = [
     {
@@ -7,6 +9,8 @@ function ContentManagement() {
       category: "Technology",
       status: "Published",
       date: "August 27, 2026",
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: 2,
@@ -15,6 +19,8 @@ function ContentManagement() {
       category: "Environment",
       status: "Published",
       date: "August 25, 2026",
+      image:
+        "https://images.unsplash.com/photo-1569511166187-97eb6e387e19?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: 3,
@@ -23,6 +29,8 @@ function ContentManagement() {
       category: "Health",
       status: "Changes Requested",
       date: "August 24, 2026",
+      image:
+        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: 4,
@@ -31,116 +39,132 @@ function ContentManagement() {
       category: "History",
       status: "Rejected",
       date: "August 22, 2026",
+      image:
+        "https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=900&q=80",
     },
   ];
 
   return (
-    <div className="admin-page">
+    <AdminLayout>
+      <div className="admin-page">
 
-      {/* Page Header */}
+        <section className="page-heading">
+          <h1>Content Management</h1>
 
-      <div className="admin-page-header">
-        <h1>Content Management</h1>
+          <p>
+            Manage published and reviewed content.
+          </p>
+        </section>
 
-        <p>
-          Manage published and reviewed content.
-        </p>
-      </div>
+        <section className="content-stats">
 
-      {/* Statistics */}
+          <div className="content-stat-card">
+            <span>Published</span>
+            <strong>2</strong>
+          </div>
 
-      <div className="content-stats">
+          <div className="content-stat-card">
+            <span>Changes Requested</span>
+            <strong>1</strong>
+          </div>
 
-        <div className="content-stat-card">
-          <span>Published</span>
-          <strong>2</strong>
-        </div>
+          <div className="content-stat-card">
+            <span>Rejected</span>
+            <strong>1</strong>
+          </div>
 
-        <div className="content-stat-card">
-          <span>Changes Requested</span>
-          <strong>1</strong>
-        </div>
+          <div className="content-stat-card">
+            <span>Total</span>
+            <strong>4</strong>
+          </div>
 
-        <div className="content-stat-card">
-          <span>Rejected</span>
-          <strong>1</strong>
-        </div>
+        </section>
 
-        <div className="content-stat-card">
-          <span>Total</span>
-          <strong>4</strong>
-        </div>
+        <section className="content-section">
 
-      </div>
-
-      {/* Content List */}
-
-      <div className="content-management">
-
-        <div className="content-management-header">
-          <h2>All Content</h2>
-        </div>
-
-        <div className="content-list">
-
-          {articles.map((article) => (
-
-            <div
-              className="content-card"
-              key={article.id}
-            >
-
-              <div className="content-card-info">
-
-                <div className="content-card-top">
-
-                  <span className="article-category">
-                    {article.category}
-                  </span>
-
-                  <span
-                    className={`content-status ${article.status
-                      .toLowerCase()
-                      .replaceAll(" ", "-")}`}
-                  >
-                    {article.status}
-                  </span>
-
-                </div>
-
-                <h3>{article.title}</h3>
-
-                <div className="content-meta">
-
-                  <span>
-                    Author: {article.author}
-                  </span>
-
-                  <span>
-                    {article.date}
-                  </span>
-
-                </div>
-
-              </div>
-
-              <div className="content-card-actions">
-
-                <button className="view-content-button">
-                  View
-                </button>
-
-              </div>
-
+          <div className="section-header">
+            <div>
+              <h2>All Content</h2>
+              <p>
+                View and manage submitted content.
+              </p>
             </div>
+          </div>
 
-          ))}
+          <div className="content-list">
 
-        </div>
+            {articles.map((article) => {
+
+              const statusClass = article.status
+                .toLowerCase()
+                .replaceAll(" ", "-");
+
+              return (
+                <article
+                  className="content-card"
+                  key={article.id}
+                >
+
+                  <div className="content-card-info">
+
+                    {/* Article Image */}
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="content-article-image"
+                    />
+
+                    {/* Category + Status */}
+                    <div className="article-top-row">
+
+                      <span className="article-category">
+                        {article.category}
+                      </span>
+
+                      <span
+                        className={`status-badge ${statusClass}`}
+                      >
+                        {article.status}
+                      </span>
+
+                    </div>
+
+                    {/* Article Heading */}
+                    <h3>
+                      {article.title}
+                    </h3>
+
+                    {/* Author + Date */}
+                    <div className="article-meta">
+
+                      <span>
+                        By {article.author}
+                      </span>
+
+                      <span>
+                        {article.date}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                  <button
+                    className="secondary-button"
+                  >
+                    View
+                  </button>
+
+                </article>
+              );
+            })}
+
+          </div>
+
+        </section>
 
       </div>
-
-    </div>
+    </AdminLayout>
   );
 }
 

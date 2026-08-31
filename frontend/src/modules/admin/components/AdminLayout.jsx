@@ -1,19 +1,14 @@
-import AdminSidebar from "./AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import "../admin.css";
 
 function AdminLayout({ children }) {
   return (
     <div className="admin-layout">
-      <AdminSidebar />
+      <AdminNavbar />
 
-      <div className="admin-main">
-        <AdminNavbar />
-
-        <main className="admin-content">
-          {children}
-        </main>
-      </div>
+      <main className="admin-content">
+        {children}
+      </main>
     </div>
   );
 }

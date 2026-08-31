@@ -9,10 +9,19 @@ import Home from "./pages/reader/Home/Home";
 import Browse from "./pages/reader/Browse/Browse";
 import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
 
+import Login from "./pages/auth/Login/Login";
+import Register from "./pages/auth/Register/Register";
+import Profile from "./pages/auth/Profile/Profile";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+         <Route path="/profile" element={<Profile />} />
 
         {/* Author */}
         <Route

@@ -1,0 +1,25 @@
+.success-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e9efe9;
+  color: #1e3d2b;
+  border: 1px solid #c7dccb;
+  border-radius: 9px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  animation: success-fade-in 0.2s ease;
+}
+
+@keyframes success-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

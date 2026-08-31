@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import "./Browse.css";
 import { FiSearch, FiEye, FiThumbsUp, FiBookOpen } from "react-icons/fi";
 import articles from "../../../data/articles";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Browse() {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState("All");
+  const location = useLocation();
+  const [activeCategory, setActiveCategory] = useState(
+    location.state?.category || "All",
+  );
   const [search, setSearch] = useState("");
+  useEffect(() => {
+    if (location.state?.category) {
+      setActiveCategory(location.state.category);
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, []);
   const categories = [
     "All",
     "Science",

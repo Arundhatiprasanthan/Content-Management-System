@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import QuizCreator from "./QuizCreator";
 import {
   Home,
@@ -11,6 +12,7 @@ import {
 import "./AuthorArticle.css";
 
 function AuthorArticle() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Science");
   const [tags, setTags] = useState("");
@@ -23,6 +25,7 @@ function AuthorArticle() {
       tags,
       content,
     });
+    alert("Draft saved successfully!");
   };
 
   const handleSubmit = () => {
@@ -32,45 +35,55 @@ function AuthorArticle() {
       tags,
       content,
     });
+    alert("Article submitted for review!");
+    navigate("/home");
   };
 
   return (
     <div className="author-page">
       {/* Top Navigation */}
       <header className="top-nav">
-        <div className="brand">
+        <div className="brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
           <div className="brand-icon">▣</div>
           <span>Lumen</span>
         </div>
 
         <nav className="main-nav">
-  <button type="button">
-    <Home size={13} strokeWidth={1.7} />
-    Home
-  </button>
+          <button type="button" onClick={() => navigate("/home")}>
+            <Home size={13} strokeWidth={1.7} />
+            Home
+          </button>
 
-  <button type="button">
-    <Search size={13} strokeWidth={1.7} />
-    Browse
-  </button>
+          <button type="button" onClick={() => navigate("/browse")}>
+            <Search size={13} strokeWidth={1.7} />
+            Browse
+          </button>
 
-  <button type="button">
-    <PenLine size={13} strokeWidth={1.7} />
-    Write
-  </button>
+          <button type="button" className="active" onClick={() => navigate("/author/article")}>
+            <PenLine size={13} strokeWidth={1.7} />
+            Write
+          </button>
 
-  <button type="button">
-    <User size={13} strokeWidth={1.7} />
-    Profile
-  </button>
-</nav>
+          <button type="button" onClick={() => navigate("/home")}>
+            <User size={13} strokeWidth={1.7} />
+            Profile
+          </button>
+        </nav>
 
         <div className="user-section">
-          <select defaultValue="author">
+          <select 
+            defaultValue="author"
+            onChange={(e) => {
+              if (e.target.value === "reader") {
+                navigate("/home");
+              }
+            }}
+          >
             <option value="author">Priya Mehta (author)</option>
+            <option value="reader">Lena Kaufmann (reader)</option>
           </select>
 
-          <span className="notification">♧</span>
+          <span className="notification">🔔</span>
 
           <div className="avatar">PM</div>
         </div>
@@ -86,7 +99,11 @@ function AuthorArticle() {
             </p>
           </div>
 
-          <button type="button" className="cancel-button">
+          <button 
+            type="button" 
+            className="cancel-button"
+            onClick={() => navigate("/home")}
+          >
             ← Cancel
           </button>
         </div>

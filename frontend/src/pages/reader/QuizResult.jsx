@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   Search,
@@ -6,11 +7,13 @@ import {
   Trophy,
   Check,
   X,
+  PenLine,
 } from "lucide-react";
 
 import "./QuizResult.css";
 
 function QuizResult({ result }) {
+  const navigate = useNavigate();
   // Temporary fallback data.
   // Baad mein QuizAttempt se actual result yahan aayega.
   const quizResult = result || {
@@ -57,7 +60,7 @@ function QuizResult({ result }) {
 
       <header className="result-navbar">
 
-        <div className="result-brand">
+        <div className="result-brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
           <div className="result-brand-icon">
             ▣
           </div>
@@ -67,17 +70,22 @@ function QuizResult({ result }) {
 
         <nav className="result-nav">
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/home")}>
             <Home size={13} strokeWidth={1.7} />
             Home
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/browse")}>
             <Search size={13} strokeWidth={1.7} />
             Browse
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/author/article")}>
+            <PenLine size={13} strokeWidth={1.7} />
+            Write
+          </button>
+
+          <button type="button" onClick={() => navigate("/home")}>
             <User size={13} strokeWidth={1.7} />
             Profile
           </button>
@@ -86,9 +94,19 @@ function QuizResult({ result }) {
 
         <div className="result-user">
 
-          <select defaultValue="reader">
+          <select 
+            defaultValue="reader"
+            onChange={(e) => {
+              if (e.target.value === "author") {
+                navigate("/author/article");
+              }
+            }}
+          >
             <option value="reader">
               Lena Kaufmann (reader)
+            </option>
+            <option value="author">
+              Priya Mehta (author)
             </option>
           </select>
 
@@ -200,6 +218,7 @@ function QuizResult({ result }) {
         <button
           type="button"
           className="back-to-article"
+          onClick={() => navigate("/home")}
         >
           Back to Article
         </button>

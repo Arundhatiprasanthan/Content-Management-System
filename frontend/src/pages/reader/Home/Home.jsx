@@ -105,6 +105,31 @@ function Home() {
               </div>
             ))}
           </div>
+          <div className="browse-by-category">
+            <div className="category-heading">
+              <span>BROWSE BY CATEGORY</span>
+            </div>
+            <div className="category-buttons">
+              {[
+                "Science",
+                "Technology",
+                "Environment",
+                "Health",
+                "History",
+              ].map((category) => (
+                <button
+                  key={category}
+                  onClick={() =>
+                    navigate("/browse", {
+                      state: { category },
+                    })
+                  }
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

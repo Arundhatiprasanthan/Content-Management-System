@@ -85,13 +85,13 @@ function App() {
         {/* Default page */}
         <Route
           path="/"
-          element={<Navigate to="/author/article" replace />}
+          element={<Navigate to="/home" replace />}
         />
 
         {/* Unknown URL */}
         <Route
           path="*"
-          element={<Navigate to="/author/article" replace />}
+          element={<Navigate to="/home" replace />}
         />
 
       </Routes>

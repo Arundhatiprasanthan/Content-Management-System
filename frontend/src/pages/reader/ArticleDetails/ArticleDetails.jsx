@@ -101,7 +101,12 @@ function ArticleDetails() {
               <p>{article.quizname}</p>
             </div>
             <div className="quiz-button-container">
-              <button className="quiz-button">Take the Quiz</button>
+              <button 
+                className="quiz-button" 
+                onClick={() => navigate('/quiz')}
+              >
+                Take the Quiz
+              </button>
             </div>
           </div>
         </div>

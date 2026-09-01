@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   Search,
@@ -35,6 +36,7 @@ const quizQuestions = [
 ];
 
 function QuizAttempt() {
+  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [selectedAnswer, setSelectedAnswer] =
@@ -165,7 +167,7 @@ function QuizAttempt() {
 
       <header className="quiz-navbar">
 
-        <div className="quiz-brand">
+        <div className="quiz-brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
 
           <div className="quiz-brand-icon">
             ▣
@@ -177,7 +179,7 @@ function QuizAttempt() {
 
         <nav className="quiz-nav">
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/home")}>
             <Home
               size={13}
               strokeWidth={1.7}
@@ -185,7 +187,7 @@ function QuizAttempt() {
             Home
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/browse")}>
             <Search
               size={13}
               strokeWidth={1.7}
@@ -193,7 +195,7 @@ function QuizAttempt() {
             Browse
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/author/article")}>
             <PenLine
               size={13}
               strokeWidth={1.7}
@@ -201,7 +203,7 @@ function QuizAttempt() {
             Write
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => navigate("/home")}>
             <User
               size={13}
               strokeWidth={1.7}
@@ -213,10 +215,20 @@ function QuizAttempt() {
 
         <div className="quiz-user">
 
-          <select defaultValue="reader">
+          <select 
+            defaultValue="reader"
+            onChange={(e) => {
+              if (e.target.value === "author") {
+                navigate("/author/article");
+              }
+            }}
+          >
 
             <option value="reader">
               Lena Kaufmann (reader)
+            </option>
+            <option value="author">
+              Priya Mehta (author)
             </option>
 
           </select>
@@ -246,6 +258,7 @@ function QuizAttempt() {
         <button
           type="button"
           className="back-article"
+          onClick={() => navigate(-1)}
         >
           <ArrowLeft size={14} />
 

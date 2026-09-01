@@ -1,0 +1,61 @@
+.role-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.role-pill {
+  flex: 1;
+  min-width: 140px;
+  text-align: left;
+  border: 1.5px solid #1c17141f;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.role-pill-selected {
+  border-color: #1e3d2b;
+  background: #eaf0ec;
+}
+.role-pill-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.role-pill-title {
+  font-weight: 600;
+  color: #1c1714;
+  font-size: 14px;
+}
+.role-pill-sub {
+  font-size: 12px;
+  color: #7a6f62;
+  margin-left: 20px;
+}
+.role-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 99px;
+  border: 1.5px solid #a8a495;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.role-dot-selected {
+  background: #1e3d2b;
+  border-color: #1e3d2b;
+}
+
+@media (max-width: 480px) {
+  .role-options {
+    flex-direction: column;
+  }
+  .role-pill {
+    min-width: 0;
+  }
+}

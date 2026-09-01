@@ -62,6 +62,8 @@ function App() {
         <Route
           path="/admin/profile"
           element={<AdminProfile />}
+        />
+
         {/* Author */}
         <Route
           path="/author/article"
@@ -92,10 +94,10 @@ function App() {
         />
 
         {/* Default page */}
-        <Route
+        {/* <Route
           path="/"
           element={<Navigate to="/author/article" replace />}
-        />
+        /> */}
 
         {/* Unknown URL */}
         <Route

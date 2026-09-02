@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 const articleRoutes = require('./routes/articleRoutes');
 const quizRoutes = require('./routes/quizRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
@@ -18,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Mount API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/notifications', notificationRoutes);

@@ -6,6 +6,7 @@ import ArticleReview from "./modules/admin/pages/ArticleReview";
 import ContentManagement from "./modules/admin/pages/ContentManagement";
 import AdminNotifications from "./modules/admin/pages/AdminNotifications";
 import AdminProfile from "./modules/admin/pages/AdminProfile";
+
 import AuthorArticle from "./pages/author/AuthorArticle";
 import QuizCreator from "./pages/author/QuizCreator";
 
@@ -24,15 +25,18 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} />
 
+        {/* Default → Reader Home */}
         <Route
           path="/"
-          element={<Navigate to="/admin/dashboard" replace />}
+          element={<Navigate to="/home" replace />}
         />
+
+        {/* ================= ADMIN ================= */}
 
         <Route
           path="/admin/dashboard"
@@ -64,7 +68,8 @@ function App() {
           element={<AdminProfile />}
         />
 
-        {/* Author */}
+        {/* ================= AUTHOR ================= */}
+
         <Route
           path="/author/article"
           element={<AuthorArticle />}
@@ -75,14 +80,23 @@ function App() {
           element={<QuizCreator />}
         />
 
-        {/* Reader */}
+        {/* ================= READER ================= */}
 
-        <Route path="/home" element={<Home/>}/>
+        <Route
+          path="/home"
+          element={<Home />}
+        />
 
-        <Route path="/browse" element={<Browse/>}/>
+        <Route
+          path="/browse"
+          element={<Browse />}
+        />
 
-        <Route path="/article/:id" element={<ArticleDetails/>}/>
-        
+        <Route
+          path="/article/:id"
+          element={<ArticleDetails />}
+        />
+
         <Route
           path="/quiz"
           element={<QuizAttempt />}
@@ -93,16 +107,11 @@ function App() {
           element={<QuizResult />}
         />
 
-        {/* Default page */}
-        {/* <Route
-          path="/"
-          element={<Navigate to="/author/article" replace />}
-        /> */}
+        {/* ================= UNKNOWN URL ================= */}
 
-        {/* Unknown URL */}
         <Route
           path="*"
-          element={<Navigate to="/author/article" replace />}
+          element={<Navigate to="/home" replace />}
         />
 
       </Routes>

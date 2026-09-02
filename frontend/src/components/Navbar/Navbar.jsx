@@ -315,9 +315,6 @@ function Navbar() {
                     <FiPenTool /> Article Editor
                   </button>
                 )}
-                <button onClick={() => { navigate("/login"); setShowMenu(false); }}>
-                  <FiLogIn /> Switch Account
-                </button>
                 <hr />
                 <button className="dropdown-logout-btn" onClick={handleLogout}>
                   <FiLogOut /> Logout

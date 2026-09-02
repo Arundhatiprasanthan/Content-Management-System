@@ -1,92 +1,72 @@
+
 .author-page {
   min-height: 100vh;
   background: #f8f5f0;
   color: #172d21;
 }
 
-/* =========================
-   TOP NAVIGATION
-========================= */
+
+
 
 .top-nav {
-  height: 48px;
+  height: 56px;
   width: 100%;
-
   display: flex;
   align-items: center;
-
   padding: 0 34px;
   box-sizing: border-box;
-
   background: #faf8f4;
   border-bottom: 1px solid #ddd8d0;
 }
 
-/* Logo */
+
 
 .brand {
-  width: 28%;
-
+  width: 25%;
   display: flex;
   align-items: center;
   gap: 8px;
-
   font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   font-weight: 600;
-
   color: #17271f;
 }
 
 .brand-icon {
   width: 22px;
   height: 22px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 4px;
-
   background: #1c4931;
   color: #ffffff;
-
   font-size: 11px;
 }
 
-/* Navigation */
+
 
 .main-nav {
   flex: 1;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 14px;
 }
 
 .main-nav button {
-  height: 28px;
-
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: none;
   border-radius: 6px;
-
-  padding: 0 11px;
-
+  padding: 0 12px;
   background: transparent;
-
   color: #6d6962;
-
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
-
   cursor: pointer;
-
   white-space: nowrap;
 }
 
@@ -99,80 +79,63 @@
   color: #ffffff;
 }
 
+
 /* Right side */
 
 .user-section {
-  width: 28%;
-
+  width: 25%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   gap: 11px;
 }
 
 .user-section select {
-  height: 27px;
-
+  height: 30px;
   min-width: 135px;
-
   padding: 0 10px;
-
   border: 1px solid #d3cec5;
   border-radius: 6px;
-
   background: #eeeae2;
-
   color: #38352f;
-
-  font-size: 9px;
-
+  font-size: 10px;
   outline: none;
-
   cursor: pointer;
 }
 
 .notification {
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #70695f;
-
   font-size: 15px;
-
   cursor: pointer;
 }
 
 .avatar {
-  width: 25px;
-  height: 25px;
-
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-
   background: #19472f;
   color: #ffffff;
-
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 600;
 }
+
 
 /* =========================
    MAIN PAGE
 ========================= */
 
 .article-container {
-  width: 530px;
-  max-width: calc(100% - 40px);
-
-  margin: 25px auto 35px;
+  width: min(900px, calc(100% - 80px));
+  margin: 38px auto 50px;
 }
+
 
 /* =========================
    PAGE HEADING
@@ -182,44 +145,38 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-
-  margin-bottom: 17px;
+  margin-bottom: 22px;
 }
 
 .page-heading h1 {
   margin: 0;
-
   font-family: Georgia, "Times New Roman", serif;
-
-  font-size: 20px;
+  font-size: 26px;
   line-height: 1.2;
-
   font-weight: 600;
-
   color: #111f18;
 }
 
 .page-heading p {
-  margin: 4px 0 0;
-
-  font-size: 10px;
+  margin: 6px 0 0;
+  font-size: 12px;
   line-height: 1.4;
-
   color: #958e83;
 }
 
 .cancel-button {
   border: none;
   background: transparent;
-
   color: #756c62;
-
-  font-size: 10px;
-
+  font-size: 11px;
   cursor: pointer;
-
-  margin-top: 3px;
+  margin-top: 5px;
 }
+
+.cancel-button:hover {
+  color: #19472f;
+}
+
 
 /* =========================
    COMMON CARD
@@ -227,55 +184,42 @@
 
 .article-card {
   width: 100%;
-
   background: #ffffff;
-
   border: 1px solid #ddd8cf;
-  border-radius: 7px;
-
-  padding: 14px;
-
+  border-radius: 8px;
+  padding: 20px;
   box-sizing: border-box;
-
-  margin-bottom: 15px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 2px rgba(23, 45, 33, 0.03);
 }
 
 .article-card label {
   display: block;
-
-  margin-bottom: 6px;
-
+  margin-bottom: 8px;
   color: #1c2921;
-
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
 }
+
 
 /* =========================
    TITLE CARD
 ========================= */
 
 .title-card {
-  padding: 14px;
+  padding: 20px;
 }
 
 .title-card input {
   width: 100%;
-  height: 29px;
-
+  height: 38px;
   box-sizing: border-box;
-
   border: 1px solid #d5cfc5;
-  border-radius: 5px;
-
+  border-radius: 6px;
   background: #eeeae2;
-
-  padding: 0 9px;
-
-  font-size: 11px;
-
+  padding: 0 11px;
+  font-size: 13px;
   color: #34312d;
-
   outline: none;
 }
 
@@ -285,65 +229,54 @@
   color: #a39c91;
 }
 
+
 /* =========================
-   CATEGORY / TAGS / CONTENT
+   CATEGORY / TAGS
 ========================= */
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .form-group select,
 .form-group input {
   width: 100%;
-  height: 27px;
-
+  height: 36px;
   box-sizing: border-box;
-
   border: 1px solid #d5cfc5;
-  border-radius: 5px;
-
+  border-radius: 6px;
   background: #eeeae2;
-
-  padding: 0 8px;
-
-  font-size: 10px;
-
+  padding: 0 10px;
+  font-size: 12px;
   color: #38352f;
-
   outline: none;
 }
 
+
+/* =========================
+   CONTENT
+========================= */
+
 .content-group {
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .content-group textarea {
   width: 100%;
-  height: 160px;
-
+  min-height: 260px;
   box-sizing: border-box;
-
-  resize: none;
-
+  resize: vertical;
   border: 1px solid #d5cfc5;
-  border-radius: 5px;
-
+  border-radius: 6px;
   background: #eeeae2;
-
-  padding: 11px;
-
+  padding: 12px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 8px;
-
-  line-height: 1.5;
-
+  font-size: 12px;
+  line-height: 1.6;
   color: #38352f;
-
   outline: none;
 }
 
@@ -354,6 +287,7 @@
   border-color: #9d968b;
 }
 
+
 /* =========================
    QUIZ AREA
 ========================= */
@@ -362,6 +296,7 @@
   margin-top: 0;
 }
 
+
 /* =========================
    ACTION BUTTONS
 ========================= */
@@ -369,37 +304,32 @@
 .article-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 6px;
-
-  margin-top: 12px;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .save-button,
 .submit-button {
-  height: 27px;
-
-  border-radius: 5px;
-
-  padding: 0 13px;
-
-  font-size: 10px;
-
+  height: 36px;
+  border-radius: 6px;
+  padding: 0 17px;
+  font-size: 12px;
   cursor: pointer;
 }
 
 .save-button {
   border: 1px solid #d7d0c6;
-
   background: #ffffff;
-
   color: #514c45;
+}
+
+.save-button:hover {
+  background: #f3f0eb;
 }
 
 .submit-button {
   border: none;
-
   background: #a8b3aa;
-
   color: #ffffff;
 }
 
@@ -407,18 +337,40 @@
   background: #19472f;
 }
 
+
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
+
+  .article-container {
+    width: calc(100% - 40px);
+  }
+
   .top-nav {
-    height: 46px;
-    padding: 0 15px;
+    padding: 0 20px;
   }
 
   .brand {
     width: auto;
+  }
+
+  .user-section {
+    width: auto;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .top-nav {
+    height: 52px;
+    padding: 0 15px;
+  }
+
+  .brand {
+    font-size: 13px;
   }
 
   .main-nav {
@@ -427,22 +379,47 @@
   }
 
   .main-nav button {
-    padding: 0 6px;
+    padding: 0 7px;
     font-size: 9px;
-  }
-
-  .user-section {
-    width: auto;
   }
 
   .user-section select {
     display: none;
   }
+
+  .article-container {
+    width: calc(100% - 30px);
+    margin-top: 25px;
+  }
+
+  .page-heading h1 {
+    font-size: 22px;
+  }
+
+  .page-heading p {
+    font-size: 11px;
+  }
+
+  .article-card {
+    padding: 16px;
+  }
 }
 
+
 @media (max-width: 500px) {
+
+  .brand {
+    font-size: 12px;
+  }
+
+  .brand-icon {
+    width: 20px;
+    height: 20px;
+  }
+
   .main-nav button {
     font-size: 0;
+    padding: 0 5px;
   }
 
   .main-nav button.active {
@@ -451,6 +428,15 @@
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .page-heading {
+    margin-bottom: 16px;
+  }
+
+  .page-heading h1 {
+    font-size: 20px;
   }
 
   .article-actions {

@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import Login from "./pages/auth/Login";
 import Profile from "./pages/profile/Profile";
+
 import AuthorArticle from "./pages/author/AuthorArticle";
 import QuizCreator from "./pages/author/QuizCreator";
 
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         {/* Auth */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Login />} />
 
         {/* Reader Public Routes */}
         <Route path="/home" element={<Home />} />

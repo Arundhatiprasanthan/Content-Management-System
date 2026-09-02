@@ -1,13 +1,29 @@
-import { useState, useEffect } from "react";
-import { FiBell, FiBookOpen, FiSearch, FiUser, FiPenTool, FiLogOut, FiLogIn } from "react-icons/fi";
+import { useEffect, useRef, useState } from "react";
+import {
+  FiBell,
+  FiBookOpen,
+  FiSearch,
+  FiUser,
+  FiPenTool,
+  FiLogOut,
+  FiLogIn,
+  FiCheck,
+  FiTrash2
+} from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const notificationRef = useRef(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -30,10 +46,113 @@ function Navbar() {
     navigate("/login");
   };
 
+  const fetchNotifications = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await axios.get(
+        "http://localhost:5000/api/notifications",
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      if (response.data.success) {
+        setNotifications(response.data.data || []);
+        setUnreadCount(response.data.unreadCount || 0);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchNotifications();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const markAsRead = async (notificationId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.patch(
+        `http://localhost:5000/api/notifications/${notificationId}/read`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setNotifications((prev) =>
+        prev.map((n) => (n._id === notificationId ? { ...n, read: true } : n))
+      );
+      setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
+    } catch (error) {}
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.patch(
+        "http://localhost:5000/api/notifications/read-all",
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      setUnreadCount(0);
+    } catch (error) {}
+  };
+
+  const deleteNotification = async (notificationId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(
+        `http://localhost:5000/api/notifications/${notificationId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const deleted = notifications.find((n) => n._id === notificationId);
+      setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
+      if (deleted && !deleted.read) {
+        setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
+      }
+    } catch (error) {}
+  };
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    const nDate = new Date(date);
+    const now = new Date();
+    const diff = Math.floor((now - nDate) / (1000 * 60 * 60 * 24));
+    if (diff === 0) return "Today";
+    if (diff === 1) return "Yesterday";
+    if (diff < 7) return `${diff} days ago`;
+    return nDate.toLocaleDateString();
+  };
+
   const isLoggedIn = !!user;
   const currentRole = user?.role || "Guest";
   const isAuthorOrAdmin = currentRole === "Author" || currentRole === "Admin";
-  const userInitials = user?.name ? user.name.split(" ").map(n => n[0]).join("").toUpperCase() : "G";
+  const userInitials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+    : "G";
 
   return (
     <div className="navbar-container">
@@ -96,7 +215,87 @@ function Navbar() {
               <span className="user-role-tag">({currentRole})</span>
             </div>
 
-            <FiBell className="notification-bell" />
+            {/* Notification Bell */}
+            <div className="notification-wrapper" ref={notificationRef}>
+              <button
+                className="notification-button"
+                onClick={() => setShowNotifications((prev) => !prev)}
+                aria-label="Notifications"
+              >
+                <FiBell />
+                {unreadCount > 0 && (
+                  <span className="notification-badge">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {showNotifications && (
+                <div className="notification-dropdown">
+                  <div className="notification-header">
+                    <div>
+                      <h3>Notifications</h3>
+                      {unreadCount > 0 && (
+                        <span>
+                          {unreadCount} unread{" "}
+                          {unreadCount === 1 ? "notification" : "notifications"}
+                        </span>
+                      )}
+                    </div>
+                    {unreadCount > 0 && (
+                      <button className="mark-all-button" onClick={markAllAsRead}>
+                        Mark all as read
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="notification-list">
+                    {notifications.length === 0 ? (
+                      <div className="no-notifications">
+                        <FiBell />
+                        <p>No notifications</p>
+                        <span>You're all caught up!</span>
+                      </div>
+                    ) : (
+                      notifications.map((n) => (
+                        <div
+                          className={`notification-item ${!n.read ? "unread" : ""}`}
+                          key={n._id}
+                        >
+                          <div className="notification-content">
+                            <div className="notification-title-row">
+                              {!n.read && <span className="unread-dot"></span>}
+                              <h4>{n.title}</h4>
+                            </div>
+                            <p>{n.message}</p>
+                            <span className="notification-date">
+                              {formatDate(n.createdAt)}
+                            </span>
+                          </div>
+
+                          <div className="notification-actions">
+                            {!n.read && (
+                              <button
+                                onClick={() => markAsRead(n._id)}
+                                title="Mark as read"
+                              >
+                                <FiCheck />
+                              </button>
+                            )}
+                            <button
+                              onClick={() => deleteNotification(n._id)}
+                              title="Delete"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div
               className="user-avatar"

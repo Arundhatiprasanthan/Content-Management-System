@@ -1,0 +1,56 @@
+.field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+.field-wrap:first-child {
+  margin-top: 0;
+}
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d3b32;
+}
+.field-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #1c17141f;
+  border-radius: 9px;
+  padding: 10px 12px;
+  background: #ffffff;
+}
+.field-box-error {
+  border-color: #b8493a;
+}
+.field-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: #a8a495;
+  font-size: 16px;
+}
+.field-input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  flex: 1;
+  color: #1c1714;
+  background: transparent;
+  font-family: Arial, Helvetica, sans-serif;
+  min-width: 0;
+}
+.field-error {
+  font-size: 12px;
+  color: #b8493a;
+}
+.eye-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  padding: 0;
+  flex-shrink: 0;
+  color: #a8a495;
+  font-size: 16px;
+}

@@ -180,22 +180,33 @@
 }
 
 .profile-logout-box {
-  margin-top: 1rem;
-  text-align: right;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .btn-logout {
-  padding: 0.75rem 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
   background-color: #FEF2F2;
-  color: #B91C1C;
+  color: #DC2626;
   border: 1px solid #FECACA;
   border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-logout:hover {
-  background-color: #FEE2E2;
+  background-color: #DC2626;
+  color: #ffffff;
+  border-color: #DC2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+.logout-icon {
+  font-size: 1.1rem;
 }

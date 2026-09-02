@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FiLogOut, FiUser, FiKey, FiSave } from "react-icons/fi";
 import Navbar from "../../components/Navbar/Navbar";
 import "./Profile.css";
 
@@ -24,7 +25,6 @@ function Profile() {
         setBio(parsed.bio || "");
       } catch (e) {}
     } else {
-      // Default mock user if not logged in
       setUser({
         name: "Lena Kaufmann",
         email: "reader@lumen.test",
@@ -143,7 +143,7 @@ function Profile() {
           <div className="profile-sections">
             {/* Section 1: Edit Profile */}
             <form onSubmit={handleUpdateProfile} className="profile-form">
-              <h3>Edit Profile</h3>
+              <h3><FiUser style={{ verticalAlign: "middle", marginRight: "6px" }} /> Edit Profile</h3>
 
               <div className="form-group">
                 <label>Display Name</label>
@@ -166,6 +166,7 @@ function Profile() {
               </div>
 
               <button type="submit" className="btn-save" disabled={loading}>
+                <FiSave style={{ verticalAlign: "middle", marginRight: "6px" }} />
                 {loading ? "Saving..." : "Save Profile Changes"}
               </button>
             </form>
@@ -174,7 +175,7 @@ function Profile() {
 
             {/* Section 2: Change Password */}
             <form onSubmit={handleChangePassword} className="profile-form">
-              <h3>Security & Password</h3>
+              <h3><FiKey style={{ verticalAlign: "middle", marginRight: "6px" }} /> Security & Password</h3>
 
               <div className="form-group">
                 <label>Current Password</label>
@@ -206,7 +207,8 @@ function Profile() {
             {/* Section 3: Logout Action */}
             <div className="profile-logout-box">
               <button type="button" className="btn-logout" onClick={handleLogout}>
-                🚪 Logout from Account
+                <FiLogOut className="logout-icon" />
+                <span>Logout from Account</span>
               </button>
             </div>
           </div>

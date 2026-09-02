@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 const articleRoutes = require('./routes/articleRoutes');
 const quizRoutes = require('./routes/quizRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Mount API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/notifications', notificationRoutes);

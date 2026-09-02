@@ -7,7 +7,14 @@ const notificationService = require('../services/notificationService');
  */
 const getNotifications = async (req, res) => {
   try {
+    console.log('========== GET NOTIFICATIONS CALLED ==========');
+    console.log('REQ USER:', req.user);
+
     const userId = req.user._id;
+
+    console.log('NOTIFICATION USER ID:', userId);
+    console.log('NOTIFICATION USER ID TYPE:', typeof userId);
+
     const { page, limit, unreadOnly } = req.query;
 
     const data = await notificationService.getUserNotifications(userId, {
@@ -15,6 +22,9 @@ const getNotifications = async (req, res) => {
       limit: limit || 20,
       unreadOnly: unreadOnly === 'true'
     });
+
+    console.log('NOTIFICATIONS FOUND:', data.notifications.length);
+    console.log('UNREAD COUNT:', data.unreadCount);
 
     res.status(200).json({
       success: true,
@@ -24,6 +34,7 @@ const getNotifications = async (req, res) => {
     });
   } catch (error) {
     console.error('getNotifications error:', error);
+
     res.status(500).json({
       success: false,
       message: 'Failed to retrieve notifications',
@@ -42,7 +53,10 @@ const markNotificationRead = async (req, res) => {
     const userId = req.user._id;
     const notificationId = req.params.id;
 
-    const notification = await notificationService.markAsRead(notificationId, userId);
+    const notification = await notificationService.markAsRead(
+      notificationId,
+      userId
+    );
 
     if (!notification) {
       return res.status(404).json({
@@ -58,6 +72,7 @@ const markNotificationRead = async (req, res) => {
     });
   } catch (error) {
     console.error('markNotificationRead error:', error);
+
     res.status(500).json({
       success: false,
       message: 'Failed to update notification',
@@ -83,6 +98,7 @@ const markAllNotificationsRead = async (req, res) => {
     });
   } catch (error) {
     console.error('markAllNotificationsRead error:', error);
+
     res.status(500).json({
       success: false,
       message: 'Failed to mark all notifications as read',
@@ -101,7 +117,10 @@ const deleteNotification = async (req, res) => {
     const userId = req.user._id;
     const notificationId = req.params.id;
 
-    const notification = await notificationService.deleteNotification(notificationId, userId);
+    const notification = await notificationService.deleteNotification(
+      notificationId,
+      userId
+    );
 
     if (!notification) {
       return res.status(404).json({
@@ -116,6 +135,7 @@ const deleteNotification = async (req, res) => {
     });
   } catch (error) {
     console.error('deleteNotification error:', error);
+
     res.status(500).json({
       success: false,
       message: 'Failed to delete notification',
@@ -130,3 +150,4 @@ module.exports = {
   markAllNotificationsRead,
   deleteNotification
 };
+

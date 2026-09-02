@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuizCreator from "./QuizCreator";
-import {
-  Home,
-  Search,
-  PenLine,
-  User,
-} from "lucide-react";
+import Navbar from "../../components/Navbar/Navbar";
 import "./AuthorArticle.css";
 
 function AuthorArticle() {
@@ -102,48 +97,8 @@ function AuthorArticle() {
 
   return (
     <div className="author-page">
-      {/* Top Navigation */}
-      <header className="top-nav">
-        <div className="brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
-          <div className="brand-icon">▣</div>
-          <span>Lumen</span>
-        </div>
-
-        <nav className="main-nav">
-          <button type="button" onClick={() => navigate("/home")}>
-            <Home size={13} strokeWidth={1.7} />
-            Home
-          </button>
-
-          <button type="button" onClick={() => navigate("/browse")}>
-            <Search size={13} strokeWidth={1.7} />
-            Browse
-          </button>
-
-          <button type="button" onClick={() => navigate("/author/article")}>
-            <PenLine size={13} strokeWidth={1.7} />
-            Write
-          </button>
-
-          <button type="button" onClick={() => navigate("/browse")}>
-            <User size={13} strokeWidth={1.7} />
-            Profile
-          </button>
-        </nav>
-
-        <div className="user-section">
-          <select defaultValue="author" onChange={(e) => {
-            if (e.target.value === "reader") navigate("/home");
-          }}>
-            <option value="author">Priya Mehta (author)</option>
-            <option value="reader">Switch to Reader View</option>
-          </select>
-
-          <span className="notification">♧</span>
-
-          <div className="avatar">PM</div>
-        </div>
-      </header>
+      {/* Shared Unified Navbar */}
+      <Navbar />
 
       {/* Main Content */}
       <main className="article-container">

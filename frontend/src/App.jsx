@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 
+import Login from "./pages/auth/Login";
+import Profile from "./pages/profile/Profile";
 import AuthorArticle from "./pages/author/AuthorArticle";
 import QuizCreator from "./pages/author/QuizCreator";
 
@@ -13,48 +16,49 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
 
-        {/* Author */}
+        {/* Reader Public Routes */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/browse" element={<Browse />} />
+        <Route path="/article/:id" element={<ArticleDetails />} />
+        <Route path="/quiz" element={<QuizAttempt />} />
+        <Route path="/quiz/result" element={<QuizResult />} />
+
+        {/* Protected Profile Route */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected Author Routes (Only Author and Admin) */}
         <Route
           path="/author/article"
-          element={<AuthorArticle />}
+          element={
+            <ProtectedRoute allowedRoles={["Author", "Admin"]}>
+              <AuthorArticle />
+            </ProtectedRoute>
+          }
         />
-
         <Route
           path="/author/quiz"
-          element={<QuizCreator />}
+          element={
+            <ProtectedRoute allowedRoles={["Author", "Admin"]}>
+              <QuizCreator />
+            </ProtectedRoute>
+          }
         />
 
-        {/* Reader */}
+        {/* Default route -> Redirects to /login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route path="/home" element={<Home/>}/>
-
-        <Route path="/browse" element={<Browse/>}/>
-
-        <Route path="/article/:id" element={<ArticleDetails/>}/>
-        
-        <Route
-          path="/quiz"
-          element={<QuizAttempt />}
-        />
-
-        <Route
-          path="/quiz/result"
-          element={<QuizResult />}
-        />
-
-        {/* Default page */}
-        <Route
-          path="/"
-          element={<Navigate to="/author/article" replace />}
-        />
-
-        {/* Unknown URL */}
-        <Route
-          path="*"
-          element={<Navigate to="/author/article" replace />}
-        />
-
+        {/* Unknown URL -> Redirects to /login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );

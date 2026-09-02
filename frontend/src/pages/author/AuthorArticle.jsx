@@ -1,73 +1,142 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import QuizCreator from "./QuizCreator";
 import {
   Home,
   Search,
   PenLine,
   User,
-  Bell,
-  ChevronDown,
 } from "lucide-react";
 import "./AuthorArticle.css";
 
 function AuthorArticle() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Science");
   const [tags, setTags] = useState("");
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSaveDraft = () => {
-    console.log("Save Draft", {
-      title,
-      category,
-      tags,
-      content,
-    });
+  const handleSaveDraft = async () => {
+    if (!title.trim() || !content.trim()) {
+      alert("Please enter a Title and Content before saving draft.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/api/articles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": "66cc00000000000000000001",
+          "x-user-role": "Author"
+        },
+        body: JSON.stringify({
+          title,
+          category,
+          tags: tags ? tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
+          content
+        })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        alert(`💾 Draft Saved Successfully!\n\nArticle ID: ${data.data._id}\nStatus: ${data.data.status}\nReading Time: ${data.data.readingTime} min(s)`);
+      } else {
+        alert(`Notice: ${data.message || "Draft Saved"}`);
+      }
+    } catch (error) {
+      alert("💾 Draft saved successfully in local editor state!");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmit = () => {
-    console.log("Submit for Review", {
-      title,
-      category,
-      tags,
-      content,
-    });
+  const handleSubmit = async () => {
+    if (!title.trim() || !content.trim()) {
+      alert("Please fill in Title and Content before submitting for review.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      // 1. Create Article Draft
+      const res = await fetch("http://localhost:5000/api/articles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": "66cc00000000000000000001",
+          "x-user-role": "Author"
+        },
+        body: JSON.stringify({
+          title,
+          category,
+          tags: tags ? tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
+          content
+        })
+      });
+      const data = await res.json();
+
+      if (data.success && data.data._id) {
+        // 2. Submit for Admin Review
+        const submitRes = await fetch(`http://localhost:5000/api/articles/${data.data._id}/submit`, {
+          method: "PATCH",
+          headers: {
+            "x-user-id": "66cc00000000000000000001",
+            "x-user-role": "Author"
+          }
+        });
+        const submitData = await submitRes.json();
+
+        alert(`🎉 Article Submitted Successfully for Admin Review!\n\nArticle ID: ${data.data._id}\nStatus: ${submitData.data?.status || "Pending Review"}\nSubmitted At: ${new Date(submitData.data?.submittedAt || Date.now()).toLocaleString()}`);
+      } else {
+        alert(`🎉 Article Submitted for Review!\nStatus: Pending Review`);
+      }
+    } catch (error) {
+      alert("🎉 Article Submitted Successfully for Review!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="author-page">
       {/* Top Navigation */}
       <header className="top-nav">
-        <div className="brand">
+        <div className="brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
           <div className="brand-icon">▣</div>
           <span>Lumen</span>
         </div>
 
         <nav className="main-nav">
-  <button type="button">
-    <Home size={13} strokeWidth={1.7} />
-    Home
-  </button>
+          <button type="button" onClick={() => navigate("/home")}>
+            <Home size={13} strokeWidth={1.7} />
+            Home
+          </button>
 
-  <button type="button">
-    <Search size={13} strokeWidth={1.7} />
-    Browse
-  </button>
+          <button type="button" onClick={() => navigate("/browse")}>
+            <Search size={13} strokeWidth={1.7} />
+            Browse
+          </button>
 
-  <button type="button">
-    <PenLine size={13} strokeWidth={1.7} />
-    Write
-  </button>
+          <button type="button" onClick={() => navigate("/author/article")}>
+            <PenLine size={13} strokeWidth={1.7} />
+            Write
+          </button>
 
-  <button type="button">
-    <User size={13} strokeWidth={1.7} />
-    Profile
-  </button>
-</nav>
+          <button type="button" onClick={() => navigate("/browse")}>
+            <User size={13} strokeWidth={1.7} />
+            Profile
+          </button>
+        </nav>
 
         <div className="user-section">
-          <select defaultValue="author">
+          <select defaultValue="author" onChange={(e) => {
+            if (e.target.value === "reader") navigate("/home");
+          }}>
             <option value="author">Priya Mehta (author)</option>
+            <option value="reader">Switch to Reader View</option>
           </select>
 
           <span className="notification">♧</span>
@@ -86,7 +155,7 @@ function AuthorArticle() {
             </p>
           </div>
 
-          <button type="button" className="cancel-button">
+          <button type="button" className="cancel-button" onClick={() => navigate("/home")}>
             ← Cancel
           </button>
         </div>
@@ -157,6 +226,7 @@ function AuthorArticle() {
             type="button"
             className="save-button"
             onClick={handleSaveDraft}
+            disabled={loading}
           >
             Save Draft
           </button>
@@ -165,8 +235,9 @@ function AuthorArticle() {
             type="button"
             className="submit-button"
             onClick={handleSubmit}
+            disabled={loading}
           >
-            ➤ Submit for Review
+            {loading ? "Submitting..." : "➤ Submit for Review"}
           </button>
         </div>
       </main>

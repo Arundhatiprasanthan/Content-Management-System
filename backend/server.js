@@ -3,11 +3,6 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const articleRoutes = require('./routes/articleRoutes');
-const quizRoutes = require('./routes/quizRoutes');
-const notificationRoutes = require('./routes/notificationRoutes');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -19,16 +14,34 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Mount API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
+// Mount Articles API Route (Ritik's Module)
+const articleRoutes = require('./routes/articleRoutes');
 app.use('/api/articles', articleRoutes);
-app.use('/api/quizzes', quizRoutes);
-app.use('/api/notifications', notificationRoutes);
+
+// Optional module routes mounted safely if available from teammates
+try {
+  const authRoutes = require('./routes/authRoutes');
+  app.use('/api/auth', authRoutes);
+} catch (err) {}
+
+try {
+  const userRoutes = require('./routes/userRoutes');
+  app.use('/api/users', userRoutes);
+} catch (err) {}
+
+try {
+  const quizRoutes = require('./routes/quizRoutes');
+  app.use('/api/quizzes', quizRoutes);
+} catch (err) {}
+
+try {
+  const notificationRoutes = require('./routes/notificationRoutes');
+  app.use('/api/notifications', notificationRoutes);
+} catch (err) {}
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Lumen CMS Backend is running' });
+  res.status(200).json({ status: 'OK', message: 'Lumen CMS Backend (Articles & Content Module) is running' });
 });
 
 // Error handling middleware for unknown routes

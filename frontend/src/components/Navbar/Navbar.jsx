@@ -12,7 +12,6 @@ import {
 } from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./Navbar.css";
 
 function Navbar() {
@@ -51,16 +50,14 @@ function Navbar() {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.get(
-        "http://localhost:5000/api/notifications",
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/notifications", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await response.json();
 
-      if (response.data.success) {
-        setNotifications(response.data.data || []);
-        setUnreadCount(response.data.unreadCount || 0);
+      if (data.success) {
+        setNotifications(data.data || []);
+        setUnreadCount(data.unreadCount || 0);
       }
     } catch (error) {}
   };
@@ -89,11 +86,10 @@ function Navbar() {
   const markAsRead = async (notificationId) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.patch(
-        `http://localhost:5000/api/notifications/${notificationId}/read`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await fetch(`http://localhost:5000/api/notifications/${notificationId}/read`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       setNotifications((prev) =>
         prev.map((n) => (n._id === notificationId ? { ...n, read: true } : n))
@@ -105,11 +101,10 @@ function Navbar() {
   const markAllAsRead = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.patch(
-        "http://localhost:5000/api/notifications/read-all",
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await fetch("http://localhost:5000/api/notifications/read-all", {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
       setUnreadCount(0);
@@ -119,10 +114,10 @@ function Navbar() {
   const deleteNotification = async (notificationId) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(
-        `http://localhost:5000/api/notifications/${notificationId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await fetch(`http://localhost:5000/api/notifications/${notificationId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       const deleted = notifications.find((n) => n._id === notificationId);
       setNotifications((prev) => prev.filter((n) => n._id !== notificationId));

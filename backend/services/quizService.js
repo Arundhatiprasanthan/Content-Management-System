@@ -1,8 +1,8 @@
 const Quiz = require('../models/Quiz');
 const QuizAttempt = require('../models/QuizAttempt');
 const Article = require('../models/Article');
+const User = require('../models/User');
 const { createNotification } = require('./notificationService');
-
 /**
  * Validate questions structure
  */
@@ -107,17 +107,31 @@ const createQuiz = async (quizData, user) => {
   }
 
   // Trigger in-app notification to author
+// Notify Admins when a quiz is submitted for review
+if (quiz.status === 'Pending Review') {
   try {
-    await createNotification({
-      userId: user._id,
-      type: 'quiz_created',
-      title: 'Quiz Created Successfully',
-      message: `Your quiz for "${article.title}" has been saved with ${questions.length} questions.`,
-      link: `/articles/${articleId}`
-    });
-  } catch (err) {
-    console.warn('Could not dispatch quiz creation notification:', err.message);
+    const admins = await User.find({
+      role: 'Admin'
+    }).select('_id');
+
+    await Promise.all(
+      admins.map((admin) =>
+        createNotification({
+          userId: admin._id,
+          type: 'quiz_submitted',
+          title: 'New Quiz Submitted',
+          message: `${user.name || 'An author'} submitted "${quiz.title}" for review.`,
+          link: `/admin/review/quiz/${quiz._id}`
+        })
+      )
+    );
+  } catch (notificationError) {
+    console.warn(
+      'Could not dispatch quiz submission notification:',
+      notificationError.message
+    );
   }
+}
 
   return quiz;
 };

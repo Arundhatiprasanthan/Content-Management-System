@@ -1,4 +1,6 @@
 const Article = require('../models/Article');
+const User = require('../models/User');
+const { createNotification } = require('../services/notificationService');
 const { calculateReadingTime, buildArticleQuery } = require('../services/articleService');
 
 /**
@@ -340,7 +342,27 @@ const submitArticle = async (req, res) => {
     article.submittedAt = new Date();
 
     await article.save();
+    // Notify all Admins about the new article submission
+try {
+  const admins = await User.find({ role: 'Admin' }).select('_id');
 
+  await Promise.all(
+    admins.map((admin) =>
+      createNotification({
+        userId: admin._id,
+        type: 'article_submitted',
+        title: 'New Article Submitted',
+        message: `${req.user.name || 'An author'} submitted "${article.title}" for review.`,
+        link: `/admin/review/article/${article._id}`
+      })
+    )
+  );
+} catch (notificationError) {
+  console.warn(
+    'Could not dispatch article submission notification:',
+    notificationError.message
+  );
+}
     res.status(200).json({
       success: true,
       data: article

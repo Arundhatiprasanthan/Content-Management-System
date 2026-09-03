@@ -11,15 +11,16 @@ const notificationSchema = new mongoose.Schema(
     type: {
       type: String,
       enum: {
-        values: [
-          'article_approved',
-          'article_rejected',
-          'changes_requested',
-          'article_submitted',
-          'quiz_created',
-          'quiz_attempted',
-          'system'
-        ],
+       values: [
+  'article_approved',
+  'article_rejected',
+  'changes_requested',
+  'article_submitted',
+  'quiz_created',
+  'quiz_submitted',
+  'quiz_attempted',
+  'system'
+],
         message: '{VALUE} is not a valid notification type'
       },
       default: 'system'

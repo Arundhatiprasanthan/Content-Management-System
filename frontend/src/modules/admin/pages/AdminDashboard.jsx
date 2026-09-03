@@ -105,9 +105,9 @@ function AdminDashboard() {
   // REVIEW ARTICLE
   // ==========================================
 
-  const handleReview = (articleId) => {
-    window.location.href = `/admin/review/${articleId}`;
-  };
+const handleReview = (articleId) => {
+  window.location.href = `/admin/review/article/${articleId}`;
+};
 
   // ==========================================
   // DASHBOARD UI

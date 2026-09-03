@@ -19,10 +19,8 @@ const articleRoutes = require('./routes/articleRoutes');
 app.use('/api/articles', articleRoutes);
 
 // Optional module routes mounted safely if available from teammates
-try {
-  const authRoutes = require('./routes/authRoutes');
-  app.use('/api/auth', authRoutes);
-} catch (err) {}
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
 
 try {
   const userRoutes = require('./routes/userRoutes');

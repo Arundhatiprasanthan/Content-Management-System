@@ -102,7 +102,7 @@ const createQuiz = async (quizData, user) => {
       title: title || `${article.title} Quiz`,
       description: description || '',
       questions,
-      status: status || 'Published'
+     status: status || 'Pending Review'
     });
   }
 

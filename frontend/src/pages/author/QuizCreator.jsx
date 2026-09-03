@@ -7,26 +7,41 @@ const createQuestion = () => ({
   correctAnswer: null,
 });
 
-function QuizCreator() {
+function QuizCreator({ onQuizChange }) {
   const [quizEnabled, setQuizEnabled] = useState(true);
 
   const [questions, setQuestions] = useState([
     createQuestion(),
   ]);
 
-  const handleQuestionChange = (questionIndex, value) => {
-    setQuestions((currentQuestions) =>
-      currentQuestions.map((question, index) =>
-        index === questionIndex
-          ? { ...question, question: value }
-          : question
-      )
-    );
+  const updateQuestions = (updatedQuestions) => {
+    setQuestions(updatedQuestions);
+
+    if (onQuizChange) {
+      onQuizChange({
+        enabled: quizEnabled,
+        questions: updatedQuestions,
+      });
+    }
   };
 
-  const handleOptionChange = (questionIndex, optionIndex, value) => {
-    setQuestions((currentQuestions) =>
-      currentQuestions.map((question, index) => {
+  const handleQuestionChange = (questionIndex, value) => {
+    const updatedQuestions = questions.map((question, index) =>
+      index === questionIndex
+        ? { ...question, question: value }
+        : question
+    );
+
+    updateQuestions(updatedQuestions);
+  };
+
+  const handleOptionChange = (
+    questionIndex,
+    optionIndex,
+    value
+  ) => {
+    const updatedQuestions = questions.map(
+      (question, index) => {
         if (index !== questionIndex) {
           return question;
         }
@@ -38,25 +53,36 @@ function QuizCreator() {
           ...question,
           options: updatedOptions,
         };
-      })
+      }
     );
+
+    updateQuestions(updatedQuestions);
   };
 
-  const handleCorrectAnswer = (questionIndex, optionIndex) => {
-    setQuestions((currentQuestions) =>
-      currentQuestions.map((question, index) =>
+  const handleCorrectAnswer = (
+    questionIndex,
+    optionIndex
+  ) => {
+    const updatedQuestions = questions.map(
+      (question, index) =>
         index === questionIndex
-          ? { ...question, correctAnswer: optionIndex }
+          ? {
+              ...question,
+              correctAnswer: optionIndex,
+            }
           : question
-      )
     );
+
+    updateQuestions(updatedQuestions);
   };
 
   const addQuestion = () => {
-    setQuestions((currentQuestions) => [
-      ...currentQuestions,
+    const updatedQuestions = [
+      ...questions,
       createQuestion(),
-    ]);
+    ];
+
+    updateQuestions(updatedQuestions);
   };
 
   const removeQuestion = (questionIndex) => {
@@ -64,11 +90,24 @@ function QuizCreator() {
       return;
     }
 
-    setQuestions((currentQuestions) =>
-      currentQuestions.filter(
-        (_, index) => index !== questionIndex
-      )
+    const updatedQuestions = questions.filter(
+      (_, index) => index !== questionIndex
     );
+
+    updateQuestions(updatedQuestions);
+  };
+
+  const handleToggle = () => {
+    const newEnabled = !quizEnabled;
+
+    setQuizEnabled(newEnabled);
+
+    if (onQuizChange) {
+      onQuizChange({
+        enabled: newEnabled,
+        questions,
+      });
+    }
   };
 
   return (
@@ -76,7 +115,9 @@ function QuizCreator() {
       <div className="quiz-header">
         <div>
           <h2>Add a Quiz</h2>
-          <p>Quizzes increase reader engagement significantly.</p>
+          <p>
+            Quizzes increase reader engagement significantly.
+          </p>
         </div>
 
         <button
@@ -84,7 +125,7 @@ function QuizCreator() {
           className={`quiz-toggle ${
             quizEnabled ? "active" : ""
           }`}
-          onClick={() => setQuizEnabled((enabled) => !enabled)}
+          onClick={handleToggle}
           aria-label="Toggle quiz"
         >
           <span></span>
@@ -96,7 +137,10 @@ function QuizCreator() {
           <div className="quiz-divider"></div>
 
           {questions.map((question, questionIndex) => (
-            <div className="question-card" key={questionIndex}>
+            <div
+              className="question-card"
+              key={questionIndex}
+            >
               <div className="question-header">
                 <span>
                   QUESTION {questionIndex + 1}
@@ -129,52 +173,58 @@ function QuizCreator() {
               />
 
               <div className="options-grid">
-                {question.options.map((option, optionIndex) => {
-                  const optionLetter = String.fromCharCode(
-                    65 + optionIndex
-                  );
+                {question.options.map(
+                  (option, optionIndex) => {
+                    const optionLetter =
+                      String.fromCharCode(
+                        65 + optionIndex
+                      );
 
-                  const isCorrect =
-                    question.correctAnswer === optionIndex;
+                    const isCorrect =
+                      question.correctAnswer ===
+                      optionIndex;
 
-                  return (
-                    <div
-                      className={`option-field ${
-                        isCorrect ? "correct" : ""
-                      }`}
-                      key={optionIndex}
-                    >
-                      <button
-                        type="button"
-                        className={`correct-selector ${
-                          isCorrect ? "selected" : ""
+                    return (
+                      <div
+                        className={`option-field ${
+                          isCorrect ? "correct" : ""
                         }`}
-                        onClick={() =>
-                          handleCorrectAnswer(
-                            questionIndex,
-                            optionIndex
-                          )
-                        }
-                        aria-label={`Set option ${optionLetter} as correct answer`}
+                        key={optionIndex}
                       >
-                        {isCorrect && "✓"}
-                      </button>
+                        <button
+                          type="button"
+                          className={`correct-selector ${
+                            isCorrect
+                              ? "selected"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            handleCorrectAnswer(
+                              questionIndex,
+                              optionIndex
+                            )
+                          }
+                          aria-label={`Set option ${optionLetter} as correct answer`}
+                        >
+                          {isCorrect && "✓"}
+                        </button>
 
-                      <input
-                        type="text"
-                        placeholder={`Option ${optionLetter}`}
-                        value={option}
-                        onChange={(event) =>
-                          handleOptionChange(
-                            questionIndex,
-                            optionIndex,
-                            event.target.value
-                          )
-                        }
-                      />
-                    </div>
-                  );
-                })}
+                        <input
+                          type="text"
+                          placeholder={`Option ${optionLetter}`}
+                          value={option}
+                          onChange={(event) =>
+                            handleOptionChange(
+                              questionIndex,
+                              optionIndex,
+                              event.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    );
+                  }
+                )}
               </div>
             </div>
           ))}

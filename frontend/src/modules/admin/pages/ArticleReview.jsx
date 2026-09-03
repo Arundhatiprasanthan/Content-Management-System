@@ -1,217 +1,485 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+
+import AdminLayout from "../components/AdminLayout";
+import "./ArticleReview.css";
 
 function ArticleReview() {
-  const { articleId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const [action, setAction] = useState(null);
-  const [comment, setComment] = useState("");
-  const [status, setStatus] = useState("Pending Review");
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
+  const [showChangesBox, setShowChangesBox] = useState(false);
+  const [changeMessage, setChangeMessage] = useState("");
 
-  const article = {
-    id: articleId,
-    title: "The Future of Artificial Intelligence",
-    description:
-      "Exploring how artificial intelligence is changing the way we work and live.",
-    author: "John Doe",
-    category: "Technology",
-    readingTime: "5 min read",
-    date: "August 27, 2026",
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-    content: `
-Artificial Intelligence is becoming an important part of modern technology.
+  // ==========================================
+  // FETCH ARTICLE
+  // ==========================================
 
-AI systems are being used in healthcare, education, finance, transportation, and many other industries.
+  useEffect(() => {
+    fetchArticle();
+  }, [id]);
 
-As technology continues to develop, artificial intelligence has the potential to change the way people work and interact with technology.
+  const fetchArticle = async () => {
+    try {
+      setLoading(true);
 
-However, responsible development and proper management are important to ensure that AI is used safely and effectively.
-    `,
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      if (!id) {
+        console.error("Article ID is missing");
+        setArticle(null);
+        return;
+      }
+
+      console.log("Fetching article:", id);
+
+      const response = await fetch(
+        `http://localhost:5000/api/admin/articles/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(
+        "Article response status:",
+        response.status
+      );
+
+      if (response.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        navigate("/login");
+        return;
+      }
+
+      if (response.status === 403) {
+        navigate("/home");
+        return;
+      }
+
+      const data = await response.json();
+
+      console.log("Article response:", data);
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to fetch article"
+        );
+      }
+
+      if (data.success) {
+        setArticle(data.article || data.data);
+      } else {
+        setArticle(null);
+      }
+    } catch (error) {
+      console.error(
+        "Failed to fetch article:",
+        error
+      );
+
+      setArticle(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAction = (selectedAction) => {
-    setAction(selectedAction);
-  };
+  // ==========================================
+  // APPROVE / REJECT
+  // ==========================================
 
-  const submitAction = () => {
-    if (!action) return;
-
-    if (
-      (action === "Request Changes" || action === "Reject") &&
-      comment.trim() === ""
-    ) {
-      alert("Please provide a comment.");
+  const handleAction = async (action) => {
+    if (action === "request-changes") {
+      setShowChangesBox(true);
       return;
     }
 
-    if (action === "Approve") {
-      setStatus("Published");
+    const actionMessage =
+      action === "approve"
+        ? "Are you sure you want to approve and publish this article?"
+        : "Are you sure you want to reject this article?";
+
+    const confirmed = window.confirm(actionMessage);
+
+    if (!confirmed) {
+      return;
     }
 
-    if (action === "Request Changes") {
-      setStatus("Changes Requested");
-    }
+    try {
+      setProcessing(true);
 
-    if (action === "Reject") {
-      setStatus("Rejected");
-    }
+      const token = localStorage.getItem("token");
 
-    setAction(null);
-    setComment("");
+      const response = await fetch(
+        `http://localhost:5000/api/admin/articles/${id}/${action}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      console.log("Action response:", data);
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Action failed"
+        );
+      }
+
+      alert(
+        data.message ||
+          "Action completed successfully."
+      );
+
+      navigate("/admin/review");
+    } catch (error) {
+      console.error(
+        "Admin action error:",
+        error
+      );
+
+      alert(error.message);
+    } finally {
+      setProcessing(false);
+    }
   };
 
-  return (
-    <div className="admin-page">
+  // ==========================================
+  // REQUEST CHANGES
+  // ==========================================
 
-      <button
-        className="back-button"
-        onClick={() => navigate("/admin/review")}
-      >
-        ← Back to Review Queue
-      </button>
+  const requestChanges = async () => {
+    if (!changeMessage.trim()) {
+      alert("Please enter the changes required.");
+      return;
+    }
 
-      {/* Article Header */}
+    try {
+      setProcessing(true);
 
-      <div className="article-review-header">
+      const token = localStorage.getItem("token");
 
-        <div>
+      const response = await fetch(
+        `http://localhost:5000/api/admin/articles/${id}/request-changes`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: changeMessage.trim(),
+          }),
+        }
+      );
 
-          <div className="review-article-top">
+      const data = await response.json();
 
-            <span className="article-category">
-              {article.category}
-            </span>
+      console.log(
+        "Request changes response:",
+        data
+      );
 
-            <span className="article-status">
-              {status}
-            </span>
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+            "Failed to request changes"
+        );
+      }
 
-          </div>
+      alert(
+        data.message ||
+          "Changes requested successfully."
+      );
 
-          <h1>{article.title}</h1>
+      navigate("/admin/review");
+    } catch (error) {
+      console.error(
+        "Request changes error:",
+        error
+      );
 
-          <p>{article.description}</p>
+      alert(error.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
 
-        </div>
+  // ==========================================
+  // LOADING
+  // ==========================================
 
-      </div>
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="admin-page">
+          <div className="dashboard-empty">
+            <h3>Loading article...</h3>
 
-      {/* Article Metadata */}
-
-      <div className="article-review-meta">
-
-        <span>Author: {article.author}</span>
-
-        <span>{article.readingTime}</span>
-
-        <span>{article.date}</span>
-
-      </div>
-
-      {/* Article Image */}
-
-      <div className="article-review-image">
-
-        <img
-          src={article.image}
-          alt={article.title}
-        />
-
-      </div>
-
-      {/* Article Content */}
-
-      <div className="article-content">
-
-        {article.content}
-
-      </div>
-
-      {/* Review Actions */}
-
-      <div className="review-actions">
-
-        <h2>Review Article</h2>
-
-        <div className="review-action-buttons">
-
-          <button
-            className="approve-button"
-            onClick={() => handleAction("Approve")}
-          >
-            Approve
-          </button>
-
-          <button
-            className="changes-button"
-            onClick={() => handleAction("Request Changes")}
-          >
-            Request Changes
-          </button>
-
-          <button
-            className="reject-button"
-            onClick={() => handleAction("Reject")}
-          >
-            Reject
-          </button>
-
-        </div>
-
-      </div>
-
-      {/* Action Form */}
-
-      {action && (
-        <div className="review-action-form">
-
-          <h3>{action}</h3>
-
-          {action === "Approve" ? (
             <p>
-              Are you sure you want to approve this article?
-              It will become published.
+              Please wait while the article is loaded.
             </p>
-          ) : (
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder={
-                action === "Reject"
-                  ? "Enter rejection reason..."
-                  : "Enter changes required..."
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  // ==========================================
+  // ARTICLE NOT FOUND
+  // ==========================================
+
+  if (!article) {
+    return (
+      <AdminLayout>
+        <div className="admin-page">
+          <div className="dashboard-empty">
+            <h3>Article not found</h3>
+
+            <p>
+              The article could not be loaded.
+            </p>
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate("/admin/review")
               }
-              rows="5"
-            />
-          )}
+            >
+              Back to Review Queue
+            </button>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
-          <div className="review-form-buttons">
+  // ==========================================
+  // ARTICLE REVIEW PAGE
+  // ==========================================
+
+  return (
+    <AdminLayout>
+      <div className="admin-page">
+
+        {/* PAGE HEADING */}
+
+        <section className="page-heading">
+          <div>
 
             <button
-              onClick={() => {
-                setAction(null);
-                setComment("");
-              }}
-              className="cancel-button"
+              type="button"
+              className="back-button"
+              onClick={() =>
+                navigate("/admin/review")
+              }
             >
-              Cancel
+              ← Back to Review Queue
             </button>
 
-            <button
-              onClick={submitAction}
-              className="confirm-button"
-            >
-              Confirm {action}
-            </button>
+            <h1>{article.title}</h1>
+
+            <p>
+              Review the article before publishing it.
+            </p>
 
           </div>
+        </section>
 
-        </div>
-      )}
+        {/* REVIEW CONTENT */}
 
-    </div>
+        <section className="article-review-container">
+
+          {/* ARTICLE */}
+
+          <div className="article-review-main">
+
+            {/* COVER IMAGE */}
+
+            {article.coverImage && (
+              <img
+                src={article.coverImage}
+                alt={article.title}
+                className="article-review-image"
+              />
+            )}
+
+            <div className="article-review-body">
+
+              {/* ARTICLE META */}
+
+              <div className="article-review-meta">
+
+                <span>
+                  Category:{" "}
+                  {article.category ||
+                    "Uncategorized"}
+                </span>
+
+                <span>
+                  Author:{" "}
+                  {article.author?.name ||
+                    article.authorId?.name ||
+                    article.authorName ||
+                    "Unknown"}
+                </span>
+
+                {article.submittedAt && (
+                  <span>
+                    Submitted:{" "}
+                    {new Date(
+                      article.submittedAt
+                    ).toLocaleDateString()}
+                  </span>
+                )}
+
+              </div>
+
+              {/* TITLE */}
+
+              <h2>{article.title}</h2>
+
+              {/* DESCRIPTION */}
+
+              {article.description && (
+                <p className="article-excerpt">
+                  {article.description}
+                </p>
+              )}
+
+              {/* CONTENT */}
+
+              <div className="article-content">
+                {article.content}
+              </div>
+
+            </div>
+          </div>
+
+          {/* ADMIN ACTIONS */}
+
+          <aside className="article-review-actions">
+
+            <h2>Review Article</h2>
+
+            <p>
+              Choose an action for this submission.
+            </p>
+
+            {/* APPROVE */}
+
+            <button
+              type="button"
+              className="approve-button"
+              disabled={processing}
+              onClick={() =>
+                handleAction("approve")
+              }
+            >
+              {processing
+                ? "Processing..."
+                : "✓ Approve & Publish"}
+            </button>
+
+            {/* REQUEST CHANGES */}
+
+            <button
+              type="button"
+              className="changes-button"
+              disabled={processing}
+              onClick={() =>
+                handleAction("request-changes")
+              }
+            >
+              ↻ Request Changes
+            </button>
+
+            {/* REJECT */}
+
+            <button
+              type="button"
+              className="reject-button"
+              disabled={processing}
+              onClick={() =>
+                handleAction("reject")
+              }
+            >
+              × Reject
+            </button>
+
+            {/* CHANGES BOX */}
+
+            {showChangesBox && (
+              <div className="changes-box">
+
+                <label>
+                  Changes required
+                </label>
+
+                <textarea
+                  value={changeMessage}
+                  onChange={(e) =>
+                    setChangeMessage(
+                      e.target.value
+                    )
+                  }
+                  placeholder="Explain what the author needs to change..."
+                  rows={5}
+                  disabled={processing}
+                />
+
+                <div className="changes-box-actions">
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowChangesBox(false);
+                      setChangeMessage("");
+                    }}
+                    disabled={processing}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={requestChanges}
+                    disabled={processing}
+                  >
+                    {processing
+                      ? "Sending..."
+                      : "Send Request"}
+                  </button>
+
+                </div>
+
+              </div>
+            )}
+
+          </aside>
+
+        </section>
+
+      </div>
+    </AdminLayout>
   );
 }
 

@@ -1,171 +1,142 @@
-import AdminLayout from "../components/AdminLayout";
+import { useEffect, useState } from "react";
 
 function ContentManagement() {
-  const articles = [
-    {
-      id: 1,
-      title: "The Future of Artificial Intelligence",
-      author: "John Doe",
-      category: "Technology",
-      status: "Published",
-      date: "August 27, 2026",
-      image:
-        "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80",
-    },
-    {
-      id: 2,
-      title: "Climate Change and Our Future",
-      author: "Sarah Smith",
-      category: "Environment",
-      status: "Published",
-      date: "August 25, 2026",
-      image:
-        "https://images.unsplash.com/photo-1569511166187-97eb6e387e19?auto=format&fit=crop&w=900&q=80",
-    },
-    {
-      id: 3,
-      title: "The Future of Healthcare",
-      author: "Michael Brown",
-      category: "Health",
-      status: "Changes Requested",
-      date: "August 24, 2026",
-      image:
-        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80",
-    },
-    {
-      id: 4,
-      title: "Understanding Modern History",
-      author: "Emily Wilson",
-      category: "History",
-      status: "Rejected",
-      date: "August 22, 2026",
-      image:
-        "https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=900&q=80",
-    },
-  ];
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("Published");
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  const fetchArticles = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        "http://localhost:5000/api/articles",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        setArticles(data.articles || data.data || []);
+      }
+    } catch (error) {
+      console.error(
+        "Failed to fetch articles:",
+        error
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredArticles = articles.filter(
+    (article) =>
+      filter === "All" ||
+      article.status === filter
+  );
 
   return (
-    <AdminLayout>
-      <div className="admin-page">
+    <div className="admin-page">
 
-        <section className="page-heading">
+      <section className="page-heading">
+        <div>
           <h1>Content Management</h1>
 
           <p>
-            Manage published and reviewed content.
+            Manage articles and published content.
           </p>
-        </section>
+        </div>
+      </section>
 
-        <section className="content-stats">
+      <section className="dashboard-section">
 
-          <div className="content-stat-card">
-            <span>Published</span>
-            <strong>2</strong>
+        <div className="content-filter-bar">
+
+          {[
+            "All",
+            "Published",
+            "Pending Review",
+            "Changes Requested",
+            "Rejected",
+          ].map((status) => (
+            <button
+              key={status}
+              className={
+                filter === status
+                  ? "filter-button active"
+                  : "filter-button"
+              }
+              onClick={() => setFilter(status)}
+            >
+              {status}
+            </button>
+          ))}
+
+        </div>
+
+        {loading ? (
+          <div className="dashboard-empty">
+            <h3>Loading content...</h3>
           </div>
+        ) : filteredArticles.length === 0 ? (
+          <div className="dashboard-empty">
+            <h3>No content found</h3>
 
-          <div className="content-stat-card">
-            <span>Changes Requested</span>
-            <strong>1</strong>
+            <p>
+              There are no articles in this category.
+            </p>
           </div>
-
-          <div className="content-stat-card">
-            <span>Rejected</span>
-            <strong>1</strong>
-          </div>
-
-          <div className="content-stat-card">
-            <span>Total</span>
-            <strong>4</strong>
-          </div>
-
-        </section>
-
-        <section className="content-section">
-
-          <div className="section-header">
-            <div>
-              <h2>All Content</h2>
-              <p>
-                View and manage submitted content.
-              </p>
-            </div>
-          </div>
-
+        ) : (
           <div className="content-list">
 
-            {articles.map((article) => {
+            {filteredArticles.map((article) => (
+              <div
+                className="content-card"
+                key={article._id}
+              >
 
-              const statusClass = article.status
-                .toLowerCase()
-                .replaceAll(" ", "-");
+                <div>
+                  <h3>
+                    {article.title ||
+                      "Untitled Article"}
+                  </h3>
 
-              return (
-                <article
-                  className="content-card"
-                  key={article.id}
+                  <p>
+                    {article.author?.name ||
+                      article.authorName ||
+                      "Unknown Author"}
+                  </p>
+                </div>
+
+                <span
+                  className={`content-status ${(
+                    article.status || ""
+                  )
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}`}
                 >
+                  {article.status || "Unknown"}
+                </span>
 
-                  <div className="content-card-info">
-
-                    {/* Article Image */}
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="content-article-image"
-                    />
-
-                    {/* Category + Status */}
-                    <div className="article-top-row">
-
-                      <span className="article-category">
-                        {article.category}
-                      </span>
-
-                      <span
-                        className={`status-badge ${statusClass}`}
-                      >
-                        {article.status}
-                      </span>
-
-                    </div>
-
-                    {/* Article Heading */}
-                    <h3>
-                      {article.title}
-                    </h3>
-
-                    {/* Author + Date */}
-                    <div className="article-meta">
-
-                      <span>
-                        By {article.author}
-                      </span>
-
-                      <span>
-                        {article.date}
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                  <button
-                    className="secondary-button"
-                  >
-                    View
-                  </button>
-
-                </article>
-              );
-            })}
+              </div>
+            ))}
 
           </div>
+        )}
 
-        </section>
+      </section>
 
-      </div>
-    </AdminLayout>
+    </div>
   );
 }
 
 export default ContentManagement;
+

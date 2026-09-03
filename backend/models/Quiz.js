@@ -59,14 +59,21 @@ const quizSchema = new mongoose.Schema(
         message: 'Quiz must contain at least one question'
       }
     },
-    status: {
-      type: String,
-      enum: {
-        values: ['Draft', 'Published', 'Archived'],
-        message: '{VALUE} is not a valid quiz status'
-      },
-      default: 'Published'
-    }
+   status: {
+  type: String,
+  enum: {
+    values: [
+      'Draft',
+      'Pending Review',
+      'Published',
+      'Changes Requested',
+      'Rejected',
+      'Archived'
+    ],
+    message: '{VALUE} is not a valid quiz status'
+  },
+  default: 'Draft'
+}
   },
   {
     timestamps: true

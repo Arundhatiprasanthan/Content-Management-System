@@ -1,28 +1,82 @@
 import { Navigate } from "react-router-dom";
 
-/**
- * Route protection guard for authenticated users and specific roles
- */
-export function ProtectedRoute({ children, allowedRoles }) {
+function ProtectedRoute({ children, allowedRoles }) {
   const token = localStorage.getItem("token");
-  const savedUser = localStorage.getItem("user");
+  const storedUser = localStorage.getItem("user");
 
-  if (!token || !savedUser) {
-    // Security: Unauthenticated user -> Redirect to /login
+  // ==========================================
+  // NOT LOGGED IN
+  // ==========================================
+
+  if (!token || !storedUser) {
     return <Navigate to="/login" replace />;
   }
 
-  let user = null;
+  // ==========================================
+  // READ USER
+  // ==========================================
+
+  let user;
+
   try {
-    user = JSON.parse(savedUser);
-  } catch (e) {
+    user = JSON.parse(storedUser);
+  } catch (error) {
+    console.error("Invalid user data:", error);
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    // Security: Role mismatch (e.g., Reader trying to access Author Editor) -> Redirect to /home
-    return <Navigate to="/home" replace />;
+  // ==========================================
+  // CHECK USER ROLE
+  // ==========================================
+
+  if (
+    allowedRoles &&
+    allowedRoles.length > 0 &&
+    !allowedRoles.includes(user.role)
+  ) {
+    console.log(
+      "Access denied. User role:",
+      user.role,
+      "Allowed roles:",
+      allowedRoles
+    );
+
+    // Admin
+    if (user.role === "Admin") {
+      return (
+        <Navigate
+          to="/admin/dashboard"
+          replace
+        />
+      );
+    }
+
+    // Author
+    if (user.role === "Author") {
+      return (
+        <Navigate
+          to="/home"
+          replace
+        />
+      );
+    }
+
+    // Reader
+    return (
+      <Navigate
+        to="/home"
+        replace
+      />
+    );
   }
+
+  // ==========================================
+  // AUTHORIZED
+  // ==========================================
 
   return children;
 }

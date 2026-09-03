@@ -1,0 +1,664 @@
+/* =========================================
+   ARTICLE REVIEW PAGE
+   ========================================= */
+
+.admin-page {
+  min-height: calc(100vh - 64px);
+  padding: 32px 40px 60px;
+  background: #f8f7fa;
+  color: #08060d;
+}
+
+/* =========================================
+   PAGE HEADING
+   ========================================= */
+
+.page-heading {
+  max-width: 1200px;
+  margin: 0 auto 28px;
+}
+
+.page-heading > div {
+  width: 100%;
+}
+
+.page-heading h1 {
+  margin: 18px 0 8px;
+  max-width: 900px;
+
+  color: #08060d;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+
+  word-break: break-word;
+}
+
+.page-heading p {
+  margin: 0;
+
+  color: #6b6375;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   BACK BUTTON
+   ========================================= */
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 9px 15px;
+
+  border: 1px solid #e5e4e7;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #4d4655;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  border-color: #aa3bff;
+  background: #faf7fc;
+  color: #8b25d6;
+}
+
+/* =========================================
+   REVIEW CONTENT LAYOUT
+   ========================================= */
+
+.article-review-container {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+
+  align-items: start;
+}
+
+/* =========================================
+   MAIN ARTICLE CARD
+   ========================================= */
+
+.article-review-main {
+  min-width: 0;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e4e7;
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: 0 2px 8px rgba(20, 10, 30, 0.03);
+}
+
+/* =========================================
+   COVER IMAGE
+   ========================================= */
+
+.article-review-image {
+  display: block;
+
+  width: 100%;
+  height: 320px;
+
+  object-fit: cover;
+
+  background: #f1eff3;
+}
+
+/* =========================================
+   ARTICLE BODY
+   ========================================= */
+
+.article-review-body {
+  padding: 30px 32px 36px;
+}
+
+/* =========================================
+   ARTICLE META
+   ========================================= */
+
+.article-review-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #eeecef;
+
+  color: #6b6375;
+  font-size: 13px;
+}
+
+.article-review-meta span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.article-review-meta span::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+
+  margin-right: 7px;
+
+  border-radius: 50%;
+
+  background: #aa3bff;
+}
+
+/* =========================================
+   ARTICLE TITLE
+   ========================================= */
+
+.article-review-body h2 {
+  margin: 0 0 16px;
+
+  color: #08060d;
+
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.4px;
+
+  word-break: break-word;
+}
+
+/* =========================================
+   ARTICLE DESCRIPTION
+   ========================================= */
+
+.article-excerpt {
+  margin: 0 0 28px;
+  padding: 17px 19px;
+
+  border-left: 3px solid #aa3bff;
+  border-radius: 0 8px 8px 0;
+
+  background: #faf8fb;
+
+  color: #5e5666;
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* =========================================
+   ARTICLE CONTENT
+   ========================================= */
+
+.article-content {
+  color: #38323f;
+
+  font-size: 15px;
+  line-height: 1.85;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Make markdown-style headings look better
+   if article content contains ## text */
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+  margin-top: 28px;
+  margin-bottom: 12px;
+
+  color: #08060d;
+
+  line-height: 1.4;
+}
+
+.article-content h1 {
+  font-size: 25px;
+}
+
+.article-content h2 {
+  font-size: 22px;
+}
+
+.article-content h3 {
+  font-size: 19px;
+}
+
+.article-content h4 {
+  font-size: 17px;
+}
+
+.article-content p {
+  margin: 0 0 18px;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 0 0 20px;
+  padding-left: 25px;
+}
+
+.article-content li {
+  margin-bottom: 8px;
+}
+
+.article-content strong {
+  color: #08060d;
+  font-weight: 650;
+}
+
+.article-content blockquote {
+  margin: 20px 0;
+  padding: 15px 18px;
+
+  border-left: 3px solid #aa3bff;
+  border-radius: 0 8px 8px 0;
+
+  background: #faf8fb;
+
+  color: #6b6375;
+}
+
+/* =========================================
+   ADMIN REVIEW ACTION PANEL
+   ========================================= */
+
+.article-review-actions {
+  position: sticky;
+  top: 90px;
+
+  padding: 24px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e4e7;
+  border-radius: 14px;
+
+  box-shadow: 0 2px 8px rgba(20, 10, 30, 0.03);
+}
+
+.article-review-actions h2 {
+  margin: 0 0 7px;
+
+  color: #08060d;
+
+  font-size: 19px;
+  font-weight: 650;
+}
+
+.article-review-actions > p {
+  margin: 0 0 22px;
+
+  color: #6b6375;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   ACTION BUTTONS
+   ========================================= */
+
+.approve-button,
+.changes-button,
+.reject-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 44px;
+
+  margin-bottom: 10px;
+  padding: 11px 16px;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.approve-button:hover,
+.changes-button:hover,
+.reject-button:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   APPROVE
+   ========================================= */
+
+.approve-button {
+  border: 1px solid #2c9a63;
+
+  background: #2c9a63;
+  color: #ffffff;
+}
+
+.approve-button:hover {
+  border-color: #258554;
+  background: #258554;
+
+  box-shadow: 0 4px 12px rgba(44, 154, 99, 0.2);
+}
+
+/* =========================================
+   REQUEST CHANGES
+   ========================================= */
+
+.changes-button {
+  border: 1px solid #d99a20;
+
+  background: #ffffff;
+  color: #a56b00;
+}
+
+.changes-button:hover {
+  border-color: #c78a19;
+  background: #fff8e9;
+}
+
+/* =========================================
+   REJECT
+   ========================================= */
+
+.reject-button {
+  margin-bottom: 0;
+
+  border: 1px solid #d45252;
+
+  background: #ffffff;
+  color: #c13d3d;
+}
+
+.reject-button:hover {
+  border-color: #c94343;
+  background: #fff2f2;
+}
+
+/* =========================================
+   DISABLED BUTTONS
+   ========================================= */
+
+.approve-button:disabled,
+.changes-button:disabled,
+.reject-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+/* =========================================
+   REQUEST CHANGES BOX
+   ========================================= */
+
+.changes-box {
+  margin-top: 18px;
+  padding-top: 18px;
+
+  border-top: 1px solid #eeecef;
+}
+
+.changes-box label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #3f3947;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.changes-box textarea {
+  display: block;
+
+  width: 100%;
+  min-height: 125px;
+
+  box-sizing: border-box;
+
+  padding: 12px 13px;
+
+  border: 1px solid #ddd9df;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #08060d;
+
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+
+  resize: vertical;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.changes-box textarea::placeholder {
+  color: #aaa3af;
+}
+
+.changes-box textarea:focus {
+  border-color: #aa3bff;
+
+  box-shadow:
+    0 0 0 3px rgba(170, 59, 255, 0.1);
+}
+
+.changes-box textarea:disabled {
+  background: #f6f5f7;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   CHANGE BOX BUTTONS
+   ========================================= */
+
+.changes-box-actions {
+  display: flex;
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.changes-box-actions button {
+  flex: 1;
+
+  min-height: 40px;
+
+  padding: 9px 12px;
+
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.changes-box-actions button:first-child {
+  border: 1px solid #ddd9df;
+
+  background: #ffffff;
+  color: #5e5666;
+}
+
+.changes-box-actions button:first-child:hover {
+  background: #f5f3f6;
+}
+
+.changes-box-actions button:last-child {
+  border: 1px solid #aa3bff;
+
+  background: #aa3bff;
+  color: #ffffff;
+}
+
+.changes-box-actions button:last-child:hover {
+  border-color: #922fe0;
+  background: #922fe0;
+}
+
+.changes-box-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   LOADING / EMPTY STATE
+   ========================================= */
+
+.dashboard-empty {
+  max-width: 700px;
+
+  margin: 50px auto;
+  padding: 45px 30px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e4e7;
+  border-radius: 14px;
+
+  box-shadow: 0 2px 8px rgba(20, 10, 30, 0.03);
+}
+
+.dashboard-empty h3 {
+  margin: 0 0 18px;
+
+  color: #08060d;
+
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.dashboard-empty button {
+  padding: 10px 18px;
+
+  border: 1px solid #aa3bff;
+  border-radius: 8px;
+
+  background: #aa3bff;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.dashboard-empty button:hover {
+  border-color: #922fe0;
+  background: #922fe0;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 1000px) {
+  .article-review-container {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+
+  .article-review-actions {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 800px) {
+  .admin-page {
+    padding: 25px 20px 45px;
+  }
+
+  .article-review-container {
+    grid-template-columns: 1fr;
+  }
+
+  .article-review-actions {
+    position: static;
+  }
+
+  .page-heading h1 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-page {
+    padding: 20px 14px 35px;
+  }
+
+  .article-review-image {
+    height: 220px;
+  }
+
+  .article-review-body {
+    padding: 22px 18px 28px;
+  }
+
+  .article-review-body h2 {
+    font-size: 22px;
+  }
+
+  .article-review-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .article-review-actions {
+    padding: 20px 18px;
+  }
+
+  .changes-box-actions {
+    flex-direction: column;
+  }
+}

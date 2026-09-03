@@ -1,57 +1,99 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
 
 // Load environment variables
-dotenv.config({ path: path.join(__dirname, '.env') });
+dotenv.config({
+  path: path.join(__dirname, ".env"),
+});
 
 const app = express();
 
-// Middleware
+// =========================
+// MIDDLEWARE
+// =========================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Mount Articles API Route (Ritik's Module)
-const articleRoutes = require('./routes/articleRoutes');
-app.use('/api/articles', articleRoutes);
+// =========================
+// ARTICLE ROUTES
+// =========================
+const articleRoutes = require("./routes/articleRoutes");
+app.use("/api/articles", articleRoutes);
 
-// Optional module routes mounted safely if available from teammates
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes);
+// =========================
+// ADMIN ROUTES
+// =========================
+const adminRoutes = require("./routes/adminRoutes");
+app.use("/api/admin", adminRoutes);
 
+// =========================
+// AUTH ROUTES
+// =========================
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
+// =========================
+// USER ROUTES
+// =========================
 try {
-  const userRoutes = require('./routes/userRoutes');
-  app.use('/api/users', userRoutes);
-} catch (err) {}
+  const userRoutes = require("./routes/userRoutes");
+  app.use("/api/users", userRoutes);
+} catch (err) {
+  console.error("User routes could not be loaded:", err.message);
+}
 
+// =========================
+// QUIZ ROUTES
+// =========================
+const quizRoutes = require("./routes/quizRoutes");
+app.use("/api/quizzes", quizRoutes);
+
+// =========================
+// NOTIFICATION ROUTES
+// =========================
 try {
-  const quizRoutes = require('./routes/quizRoutes');
-  app.use('/api/quizzes', quizRoutes);
-} catch (err) {}
+  const notificationRoutes = require("./routes/notificationRoutes");
+  app.use("/api/notifications", notificationRoutes);
+} catch (err) {
+  console.error(
+    "Notification routes could not be loaded:",
+    err.message
+  );
+}
 
-try {
-  const notificationRoutes = require('./routes/notificationRoutes');
-  app.use('/api/notifications', notificationRoutes);
-} catch (err) {}
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Lumen CMS Backend (Articles & Content Module) is running' });
+// =========================
+// HEALTH CHECK
+// =========================
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message:
+      "Lumen CMS Backend (Articles & Content Module) is running",
+  });
 });
 
-// Error handling middleware for unknown routes
+// =========================
+// UNKNOWN ROUTES
+// =========================
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: 'API Route Not Found' });
+  res.status(404).json({
+    success: false,
+    message: "API Route Not Found",
+  });
 });
 
+// =========================
+// SERVER
+// =========================
 const PORT = process.env.PORT || 5000;
 
-// Connect DB and start server if executed directly
 if (require.main === module) {
   connectDB();
+
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });

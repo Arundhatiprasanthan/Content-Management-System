@@ -1,3 +1,7 @@
+/* ================================
+   NAVBAR
+================================ */
+
 .navbar-container {
   display: flex;
   align-items: center;
@@ -6,12 +10,22 @@
   background-color: #faf9f6;
   border-bottom: 1px solid #e8e6df;
   position: relative;
+  width: 100%;
+  min-height: 64px;
+  box-sizing: border-box;
+  z-index: 100;
 }
+
+/* ================================
+   LOGO
+================================ */
 
 .logo {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 .logo-icon-box {
@@ -24,16 +38,28 @@
   justify-content: center;
 }
 
+.logo-icon-box svg {
+  width: 20px;
+  height: 20px;
+}
+
 .logo h2 {
   font-family: serif;
   font-size: 1.5rem;
   color: #1c1917;
+  margin: 0;
 }
+
+/* ================================
+   NAVIGATION LINKS
+================================ */
 
 .navigation-link {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1.5rem;
+  flex: 1;
 }
 
 .navigation-button {
@@ -47,6 +73,12 @@
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.navigation-button svg {
+  width: 17px;
+  height: 17px;
 }
 
 .navigation-button:hover,
@@ -56,11 +88,16 @@
   font-weight: 600;
 }
 
+/* ================================
+   USER SECTION
+================================ */
+
 .user-info {
   display: flex;
   align-items: center;
   gap: 1rem;
   position: relative;
+  flex-shrink: 0;
 }
 
 .user-identity {
@@ -89,11 +126,9 @@
   font-weight: 500;
 }
 
-.notification-bell {
-  font-size: 1.1rem;
-  color: #78716c;
-  cursor: pointer;
-}
+/* ================================
+   USER AVATAR
+================================ */
 
 .user-avatar {
   width: 36px;
@@ -108,9 +143,63 @@
   font-weight: 700;
   cursor: pointer;
   user-select: none;
+  flex-shrink: 0;
 }
 
-/* Navbar Dropdown Menu */
+/* ================================
+   NOTIFICATION
+================================ */
+
+.notification-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.notification-button {
+  position: relative;
+  border: none;
+  background: transparent;
+  color: #1c1714;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 22px;
+  border-radius: 50%;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.notification-button:hover {
+  background-color: #e9e4da;
+  color: #1e3d2b;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 20px;
+  background-color: #c17f3c;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #f7f4ed;
+}
+
+/* ================================
+   USER DROPDOWN
+================================ */
+
 .navbar-dropdown-menu {
   position: absolute;
   top: 120%;
@@ -174,6 +263,10 @@
   background-color: #fef2f2 !important;
 }
 
+/* ================================
+   LOGIN BUTTON
+================================ */
+
 .navbar-login-btn {
   display: flex;
   align-items: center;
@@ -194,56 +287,8 @@
 }
 
 /* ================================
-   NOTIFICATIONS
+   NOTIFICATION DROPDOWN
 ================================ */
-
-.notification-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.notification-button {
-  position: relative;
-  border: none;
-  background: transparent;
-  color: #1c1714;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 5px;
-  font-size: 22px;
-  border-radius: 50%;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
-}
-
-.notification-button:hover {
-  background-color: #e9e4da;
-  color: #1e3d2b;
-}
-
-.notification-badge {
-  position: absolute;
-  top: -4px;
-  right: -5px;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 4px;
-  border-radius: 20px;
-  background-color: #c17f3c;
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #f7f4ed;
-}
-
-/* Dropdown */
 
 .notification-dropdown {
   position: absolute;
@@ -251,7 +296,7 @@
   right: -15px;
   width: 390px;
   max-height: 500px;
-  background-color: #fff;
+  background-color: #ffffff;
   border: 1px solid #ddd9d3;
   border-radius: 14px;
   box-shadow: 0 12px 35px rgba(28, 23, 20, 0.15);
@@ -272,7 +317,7 @@
   color: #1c1714;
   font-size: 18px;
   font-weight: 700;
-  margin-bottom: 3px;
+  margin: 0 0 3px 0;
 }
 
 .notification-header span {
@@ -294,7 +339,9 @@
   text-decoration: underline;
 }
 
-/* Notification list */
+/* ================================
+   NOTIFICATION LIST
+================================ */
 
 .notification-list {
   max-height: 420px;
@@ -356,6 +403,10 @@
   font-size: 11px;
 }
 
+/* ================================
+   NOTIFICATION ACTIONS
+================================ */
+
 .notification-actions {
   display: flex;
   align-items: center;
@@ -380,7 +431,9 @@
   color: #1e3d2b;
 }
 
-/* Empty state */
+/* ================================
+   EMPTY NOTIFICATIONS
+================================ */
 
 .no-notifications {
   padding: 45px 20px;
@@ -405,7 +458,9 @@
   font-size: 12px;
 }
 
-/* Scrollbar */
+/* ================================
+   SCROLLBAR
+================================ */
 
 .notification-list::-webkit-scrollbar {
   width: 5px;
@@ -416,9 +471,46 @@
   border-radius: 10px;
 }
 
-/* Responsive */
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+  .navbar-container {
+    padding: 0.8rem 1.5rem;
+  }
+
+  .navigation-link {
+    gap: 0.5rem;
+  }
+
+  .navigation-button {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .user-display-name,
+  .user-role-tag {
+    display: none;
+  }
+}
 
 @media (max-width: 700px) {
+  .navbar-container {
+    padding: 0.7rem 1rem;
+  }
+
+  .navigation-link {
+    gap: 0.2rem;
+  }
+
+  .navigation-button span {
+    display: none;
+  }
+
+  .navigation-button {
+    padding: 0.5rem;
+  }
+
   .notification-dropdown {
     position: fixed;
     top: 70px;
@@ -430,6 +522,18 @@
 }
 
 @media (max-width: 480px) {
+  .logo h2 {
+    font-size: 1.25rem;
+  }
+
+  .logo-icon-box {
+    padding: 0.3rem;
+  }
+
+  .user-info {
+    gap: 0.5rem;
+  }
+
   .notification-dropdown {
     top: 65px;
     right: 10px;
@@ -445,3 +549,4 @@
     padding: 14px;
   }
 }
+

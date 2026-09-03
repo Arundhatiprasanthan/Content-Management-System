@@ -1,363 +1,333 @@
-import { useState } from "react";
-import {
-  Home,
-  Search,
-  User,
-  Bell,
-  ArrowLeft,
-  PenLine,
-} from "lucide-react";
-
-import QuizResult from "./QuizResult";
-import "./QuizAttempt.css";
-
-const quizQuestions = [
-  {
-    question:
-      "ARPANET, the precursor to the internet, sent its first message in which year?",
-    options: ["1965", "1969", "1973", "1979"],
-    correctAnswer: 1,
-    explanation:
-      "ARPANET sent its first message on October 29, 1969, between UCLA and the Stanford Research Institute.",
-  },
-  {
-    question: "What does HTTP stand for?",
-    options: [
-      "HyperText Transfer Protocol",
-      "HighText Transfer Protocol",
-      "HyperText Transmission Program",
-      "High Transfer Text Protocol",
-    ],
-    correctAnswer: 0,
-    explanation:
-      "HTTP stands for HyperText Transfer Protocol, the protocol used for communication between web browsers and servers.",
-  },
-];
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function QuizAttempt() {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const { articleId } = useParams();
+  const navigate = useNavigate();
 
-  const [selectedAnswer, setSelectedAnswer] =
-    useState(null);
+  const [quiz, setQuiz] = useState(null);
+  const [answers, setAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const [answeredCount, setAnsweredCount] =
-    useState(0);
+  // ==========================================
+  // GET QUIZ BY ARTICLE ID
+  // ==========================================
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-  // Store answers submitted by the user
-  const [answers, setAnswers] = useState(
-    Array(quizQuestions.length).fill(null)
-  );
-
-  // Result page state
-  const [quizCompleted, setQuizCompleted] =
-    useState(false);
-
-  const [quizResult, setQuizResult] =
-    useState(null);
-
-  const question =
-    quizQuestions[currentQuestion];
-
-  /* =========================
-     SELECT ANSWER
-  ========================= */
-
-  const handleSelectAnswer = (optionIndex) => {
-    setSelectedAnswer(optionIndex);
-  };
-
-  /* =========================
-     NEXT / SUBMIT
-  ========================= */
-
-  const handleNextQuestion = () => {
-    // Don't continue without selecting answer
-    if (selectedAnswer === null) {
-      return;
-    }
-
-    // Save current answer
-    const updatedAnswers = [...answers];
-
-    updatedAnswers[currentQuestion] =
-      selectedAnswer;
-
-    setAnswers(updatedAnswers);
-
-    // Number of questions answered
-    const newAnsweredCount =
-      updatedAnswers.filter(
-        (answer) => answer !== null
-      ).length;
-
-    setAnsweredCount(newAnsweredCount);
-
-    /* =========================
-       LAST QUESTION
-    ========================= */
-
-    if (
-      currentQuestion ===
-      quizQuestions.length - 1
-    ) {
-      // Calculate score
-      const score =
-        updatedAnswers.filter(
-          (answer, index) =>
-            answer ===
-            quizQuestions[index].correctAnswer
-        ).length;
-
-      // Prepare result data
-      const resultQuestions =
-        quizQuestions.map(
-          (question, index) => ({
-            question: question.question,
-
-            correct:
-              updatedAnswers[index] ===
-              question.correctAnswer,
-
-            explanation:
-              question.explanation,
-          })
+        const response = await fetch(
+          `http://localhost:5000/api/quizzes/article/${articleId}`,
+          {
+            credentials: "include",
+          }
         );
 
-      const result = {
-        score,
-        total: quizQuestions.length,
-        questions: resultQuestions,
-      };
+        const data = await response.json();
 
-      setQuizResult(result);
-      setQuizCompleted(true);
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Failed to load quiz"
+          );
+        }
 
+        setQuiz(data.data);
+      } catch (error) {
+        console.error("Quiz loading error:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (articleId) {
+      fetchQuiz();
+    }
+  }, [articleId]);
+
+  // ==========================================
+  // SELECT ANSWER
+  // ==========================================
+  const handleAnswerChange = (
+    questionIndex,
+    optionIndex
+  ) => {
+    setAnswers((previousAnswers) => ({
+      ...previousAnswers,
+      [questionIndex]: optionIndex,
+    }));
+  };
+
+  // ==========================================
+  // SUBMIT QUIZ
+  // ==========================================
+  const handleSubmit = async () => {
+    if (!quiz || !quiz.questions) {
       return;
     }
 
-    /* =========================
-       NEXT QUESTION
-    ========================= */
-
-    setCurrentQuestion(
-      (current) => current + 1
+    // Check whether all questions are answered
+    const unanswered = quiz.questions.some(
+      (_, index) => answers[index] === undefined
     );
 
-    setSelectedAnswer(null);
+    if (unanswered) {
+      alert(
+        "Please answer all questions before submitting."
+      );
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setError("");
+
+      /*
+        Backend expects:
+
+        {
+          answers: [0, 2, 1]
+        }
+
+        Each number represents the selected
+        option index for that question.
+      */
+
+      const answerArray = quiz.questions.map(
+        (_, index) => answers[index]
+      );
+
+      // ==========================================
+      // POST QUIZ ATTEMPT
+      // ==========================================
+
+      const response = await fetch(
+        `http://localhost:5000/api/quizzes/${quiz._id}/attempt`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            answers: answerArray,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to submit quiz"
+        );
+      }
+
+      console.log("Quiz result:", data.data);
+
+      // ==========================================
+      // GO TO RESULT PAGE
+      // ==========================================
+
+      navigate("/quiz/result", {
+        state: {
+          result: data.data,
+          quizTitle: quiz.title,
+        },
+      });
+    } catch (error) {
+      console.error(
+        "Quiz submission error:",
+        error
+      );
+
+      setError(error.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  /* =========================
-     RESULT PAGE
-  ========================= */
+  // ==========================================
+  // LOADING
+  // ==========================================
 
-  if (quizCompleted && quizResult) {
+  if (loading) {
     return (
-      <QuizResult result={quizResult} />
+      <div className="quiz-page">
+        <h2>Loading quiz...</h2>
+      </div>
     );
   }
+
+  // ==========================================
+  // ERROR
+  // ==========================================
+
+  if (error && !quiz) {
+    return (
+      <div className="quiz-page">
+        <h2>Unable to load quiz</h2>
+
+        <p>{error}</p>
+
+        <button onClick={() => navigate(-1)}>
+          Go Back
+        </button>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // QUIZ NOT FOUND
+  // ==========================================
+
+  if (!quiz) {
+    return (
+      <div className="quiz-page">
+        <h2>Quiz not found</h2>
+
+        <p>
+          There is no quiz associated with this article.
+        </p>
+
+        <button onClick={() => navigate(-1)}>
+          Go Back
+        </button>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // QUIZ UI
+  // ==========================================
 
   return (
     <div className="quiz-page">
 
-      {/* =========================
-          NAVBAR
-      ========================= */}
+      {/* ======================================
+          QUIZ HEADER
+      ======================================= */}
 
-      <header className="quiz-navbar">
+      <div className="quiz-header">
+        <h1>{quiz.title}</h1>
 
-        <div className="quiz-brand">
+        {quiz.description && (
+          <p>{quiz.description}</p>
+        )}
 
-          <div className="quiz-brand-icon">
-            ▣
-          </div>
+        <p>
+          {quiz.questions.length}{" "}
+          {quiz.questions.length === 1
+            ? "Question"
+            : "Questions"}
+        </p>
+      </div>
 
-          <span>Lumen</span>
 
-        </div>
+      {/* ======================================
+          QUESTIONS
+      ======================================= */}
 
-        <nav className="quiz-nav">
+      <div className="quiz-questions">
 
-          <button type="button">
-            <Home
-              size={13}
-              strokeWidth={1.7}
-            />
-            Home
-          </button>
-
-          <button type="button">
-            <Search
-              size={13}
-              strokeWidth={1.7}
-            />
-            Browse
-          </button>
-
-          <button type="button">
-            <PenLine
-              size={13}
-              strokeWidth={1.7}
-            />
-            Write
-          </button>
-
-          <button type="button">
-            <User
-              size={13}
-              strokeWidth={1.7}
-            />
-            Profile
-          </button>
-
-        </nav>
-
-        <div className="quiz-user">
-
-          <select defaultValue="reader">
-
-            <option value="reader">
-              Lena Kaufmann (reader)
-            </option>
-
-          </select>
-
-          <Bell
-            className="quiz-bell"
-            size={15}
-            strokeWidth={1.7}
-          />
-
-          <div className="quiz-avatar">
-            LK
-          </div>
-
-        </div>
-
-      </header>
-
-      {/* =========================
-          MAIN
-      ========================= */}
-
-      <main className="quiz-attempt-container">
-
-        {/* Back */}
-
-        <button
-          type="button"
-          className="back-article"
-        >
-          <ArrowLeft size={14} />
-
-          Back to Article
-        </button>
-
-        {/* =========================
-            PROGRESS
-        ========================= */}
-
-        <div className="quiz-progress-header">
-
-          <span>
-            QUESTION {currentQuestion + 1} OF{" "}
-            {quizQuestions.length}
-          </span>
-
-          <span>
-            {answeredCount} answered
-          </span>
-
-        </div>
-
-        <div className="progress-line">
-
-          <div
-            className="progress-fill"
-            style={{
-              width: `${
-                (answeredCount /
-                  quizQuestions.length) *
-                100
-              }%`,
-            }}
-          ></div>
-
-        </div>
-
-        {/* =========================
-            QUESTION CARD
-        ========================= */}
-
-        <section className="attempt-question-card">
-
-          <h1>
-            {question.question}
-          </h1>
-
-          <div className="answer-list">
-
-            {question.options.map(
-              (option, optionIndex) => {
-
-                const selected =
-                  selectedAnswer ===
-                  optionIndex;
-
-                return (
-                  <button
-                    type="button"
-                    key={optionIndex}
-                    className={`answer-option ${
-                      selected
-                        ? "selected"
-                        : ""
-                    }`}
-                    onClick={() =>
-                      handleSelectAnswer(
-                        optionIndex
-                      )
-                    }
-                  >
-
-                    <span className="answer-letter">
-                      {String.fromCharCode(
-                        65 + optionIndex
-                      )}
-                    </span>
-
-                    <span className="answer-text">
-                      {option}
-                    </span>
-
-                  </button>
-                );
+        {quiz.questions.map(
+          (question, questionIndex) => (
+            <div
+              className="quiz-question"
+              key={
+                question._id ||
+                questionIndex
               }
-            )}
+            >
 
-          </div>
+              <h3>
+                {questionIndex + 1}.{" "}
+                {question.question}
+              </h3>
 
-        </section>
 
-        {/* =========================
-            NEXT / SUBMIT
-        ========================= */}
+              {/* =================================
+                  OPTIONS
+              ================================== */}
+
+              <div className="quiz-options">
+
+                {question.options.map(
+                  (option, optionIndex) => (
+                    <label
+                      className={`quiz-option ${
+                        answers[questionIndex] ===
+                        optionIndex
+                          ? "selected"
+                          : ""
+                      }`}
+                      key={optionIndex}
+                    >
+
+                      <input
+                        type="radio"
+                        name={`question-${questionIndex}`}
+                        value={optionIndex}
+                        checked={
+                          answers[
+                            questionIndex
+                          ] === optionIndex
+                        }
+                        onChange={() =>
+                          handleAnswerChange(
+                            questionIndex,
+                            optionIndex
+                          )
+                        }
+                      />
+
+                      <span>{option}</span>
+
+                    </label>
+                  )
+                )}
+
+              </div>
+
+            </div>
+          )
+        )}
+
+      </div>
+
+
+      {/* ======================================
+          SUBMISSION ERROR
+      ======================================= */}
+
+      {error && (
+        <div className="quiz-error">
+          {error}
+        </div>
+      )}
+
+
+      {/* ======================================
+          SUBMIT BUTTON
+      ======================================= */}
+
+      <div className="quiz-submit-container">
 
         <button
-          type="button"
-          className={`next-question ${
-            selectedAnswer !== null
-              ? "enabled"
-              : ""
-          }`}
-          onClick={handleNextQuestion}
+          className="quiz-submit-button"
+          onClick={handleSubmit}
+          disabled={submitting}
         >
-          {currentQuestion ===
-          quizQuestions.length - 1
-            ? "Submit Quiz"
-            : "Next Question"}
+          {submitting
+            ? "Submitting..."
+            : "Submit Quiz"}
         </button>
 
-      </main>
+      </div>
 
     </div>
   );

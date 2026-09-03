@@ -7,13 +7,19 @@ import {
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// =========================
 // Authentication
+// =========================
 import Login from "./pages/auth/Login";
 
+// =========================
 // Profile
+// =========================
 import Profile from "./pages/profile/Profile";
 
+// =========================
 // Admin
+// =========================
 import AdminDashboard from "./modules/admin/pages/AdminDashboard";
 import ReviewQueue from "./modules/admin/pages/ReviewQueue";
 import ArticleReview from "./modules/admin/pages/ArticleReview";
@@ -22,11 +28,15 @@ import ContentManagement from "./modules/admin/pages/ContentManagement";
 import AdminNotifications from "./modules/admin/pages/AdminNotifications";
 import AdminProfile from "./modules/admin/pages/AdminProfile";
 
+// =========================
 // Author
+// =========================
 import AuthorArticle from "./pages/author/AuthorArticle";
 import QuizCreator from "./pages/author/QuizCreator";
 
+// =========================
 // Reader
+// =========================
 import QuizAttempt from "./pages/reader/QuizAttempt";
 import QuizResult from "./pages/reader/QuizResult";
 import Home from "./pages/reader/Home/Home";
@@ -52,6 +62,7 @@ function App() {
           element={<Login />}
         />
 
+
         {/* =========================
             READER ROUTES
         ========================== */}
@@ -71,15 +82,18 @@ function App() {
           element={<ArticleDetails />}
         />
 
+        {/* Quiz for a specific article */}
         <Route
-          path="/quiz"
+          path="/quiz/:articleId"
           element={<QuizAttempt />}
         />
 
+        {/* Quiz Result */}
         <Route
           path="/quiz/result"
           element={<QuizResult />}
         />
+
 
         {/* =========================
             PROFILE
@@ -94,6 +108,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
 
         {/* =========================
             AUTHOR ROUTES
@@ -118,6 +133,7 @@ function App() {
           }
         />
 
+
         {/* =========================
             ADMIN ROUTES
             Admin ONLY
@@ -141,17 +157,20 @@ function App() {
           }
         />
 
-        {/* ARTICLE REVIEW */}
-        <Route
-          path="/admin/review/article/:id"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <ArticleReview />
-            </ProtectedRoute>
-          }
-        />
+        {/* Article Review */}
 
-        {/* QUIZ REVIEW */}
+ <Route
+  path="/quiz/:articleId"
+  element={<QuizAttempt />}
+/>
+
+<Route
+  path="/quiz/result"
+  element={<QuizResult />}
+/>
+
+        {/* Quiz Review */}
+
         <Route
           path="/admin/review/quiz/:id"
           element={
@@ -188,6 +207,7 @@ function App() {
           }
         />
 
+
         {/* =========================
             DEFAULT ROUTE
         ========================== */}
@@ -201,6 +221,7 @@ function App() {
             />
           }
         />
+
 
         {/* =========================
             UNKNOWN URL

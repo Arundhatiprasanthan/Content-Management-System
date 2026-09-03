@@ -47,12 +47,7 @@ router
   .delete(protect, deleteQuiz);
 
 // Submit quiz attempt
-router.post(
-  "/:id/attempt",
-  optionalAuth,
-  submitQuizAttempt
-);
-
+router.post("/:id/attempt", protect, submitQuizAttempt);
 // Get quiz results
 router.get(
   "/:id/results",

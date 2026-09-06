@@ -94,7 +94,12 @@ try {
     err.message
   );
 }
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
 
+app.use(
+  "/api/subscriptions",
+  subscriptionRoutes
+);
 // =========================
 // HEALTH CHECK
 // =========================

@@ -1,3 +1,4 @@
+import SubscribeButton from "../../../components/subscription/SubscribeButton";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../../components/Navbar/Navbar";
@@ -174,6 +175,12 @@ function ArticleDetails() {
                 <h4>{getAuthorName()}</h4>
 
                 <p>{getAuthorBio()}</p>
+
+                {article.authorId?._id && (
+                  <SubscribeButton
+                    authorId={article.authorId._id}
+                  />
+                )}
               </div>
             </div>
 

@@ -273,6 +273,16 @@ function Navbar() {
           <span>Browse</span>
         </NavLink>
 
+        {/* My Subscriptions */}
+        <NavLink
+          to="/my-subscriptions"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <span>My Subscriptions</span>
+        </NavLink>
+
         {/* AUTHOR → WRITE */}
         {currentRole === "Author" && (
           <NavLink
@@ -548,4 +558,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

@@ -5,7 +5,7 @@ import AdminLayout from "../components/AdminLayout";
 import "./ArticleReview.css";
 
 function ArticleReview() {
-  const { id } = useParams();
+  const { articleId } = useParams();
   const navigate = useNavigate();
 
   const [article, setArticle] = useState(null);
@@ -20,7 +20,7 @@ function ArticleReview() {
 
   useEffect(() => {
     fetchArticle();
-  }, [id]);
+  }, [articleId]);
 
   const fetchArticle = async () => {
     try {
@@ -33,16 +33,16 @@ function ArticleReview() {
         return;
       }
 
-      if (!id) {
+      if (!articleId) {
         console.error("Article ID is missing");
         setArticle(null);
         return;
       }
 
-      console.log("Fetching article:", id);
+      console.log("Fetching article:", articleId);
 
       const response = await fetch(
-        `http://localhost:5000/api/admin/articles/${id}`,
+        `http://localhost:5000/api/admin/articles/${articleId}`,
         {
           method: "GET",
           headers: {
@@ -124,7 +124,7 @@ function ArticleReview() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:5000/api/admin/articles/${id}/${action}`,
+        `http://localhost:5000/api/admin/articles/${articleId}/${action}`,
         {
           method: "PATCH",
           headers: {
@@ -178,7 +178,7 @@ function ArticleReview() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:5000/api/admin/articles/${id}/request-changes`,
+        `http://localhost:5000/api/admin/articles/${articleId}/request-changes`,
         {
           method: "PATCH",
           headers: {

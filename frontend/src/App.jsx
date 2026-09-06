@@ -43,6 +43,11 @@ import Home from "./pages/reader/Home/Home";
 import Browse from "./pages/reader/Browse/Browse";
 import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
 
+// =========================
+// Subscription
+// =========================
+import MySubscriptions from "./pages/reader/MySubscriptions";
+
 function App() {
   return (
     <BrowserRouter>
@@ -92,6 +97,21 @@ function App() {
         <Route
           path="/quiz/result"
           element={<QuizResult />}
+        />
+
+
+        {/* =========================
+            MY SUBSCRIPTIONS
+            Logged-in users only
+        ========================== */}
+
+        <Route
+          path="/my-subscriptions"
+          element={
+            <ProtectedRoute>
+              <MySubscriptions />
+            </ProtectedRoute>
+          }
         />
 
 
@@ -157,19 +177,24 @@ function App() {
           }
         />
 
-        {/* Article Review */}
 
- <Route
-  path="/quiz/:articleId"
-  element={<QuizAttempt />}
-/>
+        {/* =========================
+            ARTICLE REVIEW
+        ========================== */}
 
-<Route
-  path="/quiz/result"
-  element={<QuizResult />}
-/>
+        <Route
+          path="/admin/review/:articleId"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <ArticleReview />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Quiz Review */}
+
+        {/* =========================
+            QUIZ REVIEW
+        ========================== */}
 
         <Route
           path="/admin/review/quiz/:id"

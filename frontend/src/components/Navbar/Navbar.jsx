@@ -23,11 +23,7 @@ function Navbar() {
   const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
 
-  const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [showNotifications, setShowNotifications] = useState(false);
-
-  const notificationRef = useRef(null);
 
   // Get logged-in user from localStorage
   useEffect(() => {
@@ -52,7 +48,7 @@ function Navbar() {
 
     setUser(null);
     setShowMenu(false);
-    setShowNotifications(false);
+    setUnreadCount(0);
 
     navigate("/login");
   };
@@ -62,7 +58,7 @@ function Navbar() {
     try {
       const token = localStorage.getItem("token");
 
-      if (!token) return;
+      if (!token) { setUnreadCount(0); return;}
 
       const response = await fetch(
         "http://localhost:5000/api/notifications",
@@ -76,7 +72,6 @@ function Navbar() {
       const data = await response.json();
 
       if (data.success) {
-        setNotifications(data.data || []);
         setUnreadCount(data.unreadCount || 0);
       }
     } catch (error) {
@@ -89,136 +84,30 @@ function Navbar() {
     if (user) {
       fetchNotifications();
     } else {
-      setNotifications([]);
       setUnreadCount(0);
     }
   }, [user]);
 
-  // Close notification dropdown when clicking outside
+  // LISTEN FOR NOTIFICATION UPDATES
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        notificationRef.current &&
-        !notificationRef.current.contains(event.target)
-      ) {
-        setShowNotifications(false);
+    const handleNotificationUpdate = () => {
+      if (user) {
+        fetchNotifications();
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  // Mark one notification as read
-  const markAsRead = async (notificationId) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      await fetch(
-        `http://localhost:5000/api/notifications/${notificationId}/read`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setNotifications((prev) =>
-        prev.map((notification) =>
-          notification._id === notificationId
-            ? { ...notification, read: true }
-            : notification
-        )
-      );
-
-      setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
-    } catch (error) {
-      console.error("Failed to mark notification as read:", error);
-    }
-  };
-
-  // Mark all notifications as read
-  const markAllAsRead = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      await fetch(
-        "http://localhost:5000/api/notifications/read-all",
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setNotifications((prev) =>
-        prev.map((notification) => ({
-          ...notification,
-          read: true,
-        }))
-      );
-
-      setUnreadCount(0);
-    } catch (error) {
-      console.error("Failed to mark all notifications as read:", error);
-    }
-  };
-
-  // Delete notification
-  const deleteNotification = async (notificationId) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      await fetch(
-        `http://localhost:5000/api/notifications/${notificationId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const deleted = notifications.find(
-        (notification) => notification._id === notificationId
-      );
-
-      setNotifications((prev) =>
-        prev.filter(
-          (notification) => notification._id !== notificationId
-        )
-      );
-
-      if (deleted && !deleted.read) {
-        setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
-      }
-    } catch (error) {
-      console.error("Failed to delete notification:", error);
-    }
-  };
-
-  // Format notification date
-  const formatDate = (date) => {
-    if (!date) return "";
-
-    const notificationDate = new Date(date);
-    const now = new Date();
-
-    const diff = Math.floor(
-      (now - notificationDate) / (1000 * 60 * 60 * 24)
+    window.addEventListener(
+      "notificationsUpdated",
+      handleNotificationUpdate
     );
 
-    if (diff === 0) return "Today";
-    if (diff === 1) return "Yesterday";
-    if (diff < 7) return `${diff} days ago`;
-
-    return notificationDate.toLocaleDateString();
-  };
+    return () => {
+      window.removeEventListener(
+        "notificationsUpdated",
+        handleNotificationUpdate
+      );
+    };
+  }, [user]);
 
   const isLoggedIn = !!user;
 
@@ -333,14 +222,14 @@ function Navbar() {
             {/* Notifications */}
             <div
               className="notification-wrapper"
-              ref={notificationRef}
             >
               <button
                 className="notification-button"
                 onClick={() =>
-                  setShowNotifications((prev) => !prev)
+                  navigate("/notifications")
                 }
                 aria-label="Notifications"
+                title="Notifications"
               >
                 <FiBell />
 
@@ -350,111 +239,6 @@ function Navbar() {
                   </span>
                 )}
               </button>
-
-              {showNotifications && (
-                <div className="notification-dropdown">
-
-                  {/* Notification header */}
-                  <div className="notification-header">
-                    <div>
-                      <h3>Notifications</h3>
-
-                      {unreadCount > 0 && (
-                        <span>
-                          {unreadCount} unread{" "}
-                          {unreadCount === 1
-                            ? "notification"
-                            : "notifications"}
-                        </span>
-                      )}
-                    </div>
-
-                    {unreadCount > 0 && (
-                      <button
-                        className="mark-all-button"
-                        onClick={markAllAsRead}
-                      >
-                        Mark all as read
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Notification list */}
-                  <div className="notification-list">
-
-                    {notifications.length === 0 ? (
-                      <div className="no-notifications">
-                        <FiBell />
-
-                        <p>No notifications</p>
-
-                        <span>
-                          You're all caught up!
-                        </span>
-                      </div>
-                    ) : (
-                      notifications.map((notification) => (
-                        <div
-                          className={`notification-item ${
-                            !notification.read ? "unread" : ""
-                          }`}
-                          key={notification._id}
-                        >
-                          <div className="notification-content">
-
-                            <div className="notification-title-row">
-                              {!notification.read && (
-                                <span className="unread-dot"></span>
-                              )}
-
-                              <h4>{notification.title}</h4>
-                            </div>
-
-                            <p>{notification.message}</p>
-
-                            <span className="notification-date">
-                              {formatDate(
-                                notification.createdAt
-                              )}
-                            </span>
-                          </div>
-
-                          <div className="notification-actions">
-
-                            {/* Mark as read */}
-                            {!notification.read && (
-                              <button
-                                onClick={() =>
-                                  markAsRead(
-                                    notification._id
-                                  )
-                                }
-                                title="Mark as read"
-                              >
-                                <FiCheck />
-                              </button>
-                            )}
-
-                            {/* Delete */}
-                            <button
-                              onClick={() =>
-                                deleteNotification(
-                                  notification._id
-                                )
-                              }
-                              title="Delete"
-                            >
-                              <FiTrash2 />
-                            </button>
-
-                          </div>
-                        </div>
-                      ))
-                    )}
-
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* User avatar */}

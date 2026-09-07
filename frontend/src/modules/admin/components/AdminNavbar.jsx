@@ -1,19 +1,11 @@
 import { NavLink } from "react-router-dom";
-
+import { UserRound } from "lucide-react";
+import "./AdminNavbar.css";
 function AdminNavbar() {
   return (
     <header className="admin-navbar">
       <div className="admin-navbar-inner">
-
-        <NavLink
-          to="/admin/dashboard"
-          className="admin-brand"
-        >
-          Lumen
-        </NavLink>
-
         <nav className="admin-nav">
-
           <NavLink
             to="/admin/dashboard"
             className={({ isActive }) =>
@@ -45,45 +37,27 @@ function AdminNavbar() {
             <span className="nav-icon">▤</span>
             <span>Content Management</span>
           </NavLink>
-
           <NavLink
-            to="/admin/notifications"
+            to="/admin/users"
             className={({ isActive }) =>
               isActive ? "admin-nav-link active" : "admin-nav-link"
             }
           >
-            <span className="nav-icon">♧</span>
-            <span>Notifications</span>
+            <span className="nav-icon">
+              <UserRound size={18} strokeWidth={2} />
+            </span>
+            <span>User Management</span>
           </NavLink>
-
           <NavLink
-            to="/admin/profile"
+            to="/admin/reports"
             className={({ isActive }) =>
               isActive ? "admin-nav-link active" : "admin-nav-link"
             }
           >
-            <span className="nav-icon">○</span>
-            <span>Profile</span>
+            <span className="nav-icon">⚑</span>
+            <span>Reports</span>
           </NavLink>
-
         </nav>
-
-        <div className="admin-navbar-user">
-          <div className="admin-user-avatar">
-            A
-          </div>
-
-          <div className="admin-user-details">
-            <span className="admin-user-name">
-              Admin
-            </span>
-
-            <span className="admin-user-role">
-              Administrator
-            </span>
-          </div>
-        </div>
-
       </div>
     </header>
   );

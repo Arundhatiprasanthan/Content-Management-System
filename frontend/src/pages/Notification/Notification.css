@@ -1,0 +1,346 @@
+.notification-page {
+  min-height: calc(100vh - 75px);
+  background: #f8f5ef;
+  padding: 40px 20px 60px;
+}
+.notification-container {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.notification-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.notification-page-header h1 {
+  margin: 0;
+  color: #171717;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  font-weight: 700;
+}
+.notification-page-header p {
+  margin: 8px 0 0;
+  color: #756b60;
+  font-size: 16px;
+}
+.mark-all-read-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  background: transparent;
+  color: #123c2b;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 0;
+}
+.mark-all-read-btn:hover {
+  text-decoration: underline;
+}
+.mark-all-read-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.notification-page-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.notification-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #dedbd5;
+  border-radius: 15px;
+  background: #ffffff;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.notification-card:hover {
+  border-color: #c9c5bd;
+  transform: translateY(-1px);
+}
+.notification-card.notification-unread {
+  background: #eeece5;
+  border-color: #c9c8c1;
+}
+.notification-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e8e6df;
+  font-size: 20px;
+}
+.notification-icon.success {
+  color: #00a878;
+}
+.notification-icon.error {
+  color: #ff3b30;
+}
+.notification-icon.like {
+  color: #c9822b;
+}
+.notification-icon.revision {
+  color: #ff7800;
+}
+.notification-icon.default {
+  color: #12664a;
+}
+.notification-card-content {
+  flex: 1;
+  min-width: 0;
+}
+.notification-card-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.notification-card-title h3 {
+  margin: 2px 0 8px;
+  color: #111111;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.notification-card-content p {
+  margin: 0 0 9px;
+  color: #171717;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.notification-card-date {
+  display: block;
+  color: #756b60;
+  font-size: 14px;
+}
+.notification-unread-dot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: #c98432;
+}
+.notification-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.notification-card-actions button {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #756b60;
+  font-size: 17px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.notification-card-actions button:hover {
+  background: #e8e4dc;
+  color: #173f2d;
+}
+.notification-card-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.notification-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 15px 18px;
+  border: 1px solid #e6c8c5;
+  border-radius: 10px;
+  background: #fff4f3;
+  color: #a32c24;
+  font-size: 14px;
+}
+.notification-error svg {
+  flex-shrink: 0;
+}
+.notification-error span {
+  flex: 1;
+}
+.notification-error button {
+  border: none;
+  background: transparent;
+  color: #a32c24;
+  font-weight: 600;
+  cursor: pointer;
+}
+.notification-error button:hover {
+  text-decoration: underline;
+}
+.notification-empty {
+  padding: 80px 20px;
+  text-align: center;
+  border: 1px solid #dedbd5;
+  border-radius: 15px;
+  background: #ffffff;
+}
+.empty-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ece9e1;
+  color: #81776c;
+  font-size: 30px;
+}
+.notification-empty h2 {
+  margin: 0 0 8px;
+  color: #171717;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+}
+.notification-empty p {
+  margin: 0;
+  color: #756b60;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.notification-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  border: 1px solid #dedbd5;
+  border-radius: 15px;
+  background: #ffffff;
+}
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  margin-bottom: 15px;
+  color: #17442f;
+  font-size: 25px;
+  animation: notification-spin 1s linear infinite;
+}
+.notification-loading p {
+  margin: 0;
+  color: #756b60;
+  font-size: 15px;
+}
+
+@keyframes notification-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .notification-page {
+    padding: 30px 16px 50px;
+  }
+  .notification-page-header {
+    margin-bottom: 30px;
+  }
+  .notification-page-header h1 {
+    font-size: 29px;
+  }
+  .notification-card {
+    gap: 15px;
+    padding: 17px;
+  }
+  .notification-card-title h3 {
+    font-size: 16px;
+  }
+  .notification-card-content p {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 560px) {
+  .notification-page {
+    padding: 25px 12px 40px;
+  }
+  .notification-page-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .notification-page-header h1 {
+    font-size: 27px;
+  }
+  .notification-page-header p {
+    font-size: 14px;
+  }
+  .mark-all-read-btn {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .notification-card {
+    gap: 12px;
+    padding: 15px;
+    border-radius: 12px;
+  }
+  .notification-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+  .notification-card-title h3 {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .notification-card-content p {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .notification-card-date {
+    font-size: 13px;
+  }
+  .notification-card-actions {
+    flex-direction: column;
+  }
+  .notification-card-actions button {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .notification-page-header {
+    flex-direction: column;
+  }
+  .mark-all-read-btn {
+    align-self: flex-start;
+  }
+  .notification-card {
+    align-items: flex-start;
+  }
+  .notification-card-actions {
+    display: none;
+  }
+}

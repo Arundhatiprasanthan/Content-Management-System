@@ -1,0 +1,126 @@
+.admin-navbar {
+  width: 100%;
+  background-color: #f7f4ed;
+  border-bottom: 1px solid #ddd8d0;
+}
+.admin-navbar-inner {
+  width: 100%;
+  padding: 0 40px;
+}
+.admin-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 68px;
+}
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #7a6f62;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.admin-nav-link:hover {
+  color: #1e3d2b;
+  background-color: #ede8df;
+}
+.admin-nav-link.active {
+  background-color: #1e3d2b;
+  color: #f8f4ee;
+}
+.admin-nav-link.active:hover {
+  background-color: #1e3d2b;
+  color: #f8f4ee;
+}
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 1200px) {
+  .admin-navbar-inner {
+    padding: 0 25px;
+  }
+  .admin-nav {
+    gap: 5px;
+  }
+  .admin-nav-link {
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+  .nav-icon {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 992px) {
+  .admin-navbar-inner {
+    padding: 0 20px;
+  }
+  .admin-nav {
+    min-height: 62px;
+    gap: 4px;
+  }
+  .admin-nav-link {
+    padding: 8px 10px;
+    font-size: 13px;
+    gap: 6px;
+  }
+  .nav-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-navbar {
+    position: relative;
+  }
+  .admin-navbar-inner {
+    padding: 10px 16px;
+  }
+  .admin-nav {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    min-height: auto;
+    gap: 6px;
+  }
+  .admin-nav-link {
+    padding: 8px 11px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-navbar-inner {
+    padding: 8px 12px;
+  }
+  .admin-nav {
+    gap: 5px;
+  }
+  .admin-nav-link {
+    padding: 8px 9px;
+    font-size: 12px;
+    gap: 5px;
+  }
+  .nav-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 15px;
+  }
+}

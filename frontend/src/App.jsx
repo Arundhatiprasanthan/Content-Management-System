@@ -42,6 +42,8 @@ import QuizResult from "./pages/reader/QuizResult";
 import Home from "./pages/reader/Home/Home";
 import Browse from "./pages/reader/Browse/Browse";
 import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
+import UserManagement from "./modules/admin/pages/UserManagement";
+import Reports from "./modules/admin/pages/Reports";
 
 function App() {
   return (
@@ -153,6 +155,24 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>
               <ReviewQueue />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <UserManagement/>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/reports"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <Reports/>
             </ProtectedRoute>
           }
         />

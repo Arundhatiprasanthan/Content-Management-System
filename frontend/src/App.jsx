@@ -44,6 +44,7 @@ import Browse from "./pages/reader/Browse/Browse";
 import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
 import UserManagement from "./modules/admin/pages/UserManagement";
 import Reports from "./modules/admin/pages/Reports";
+import Notification from "./pages/Notification/Notification";
 
 function App() {
   return (
@@ -107,6 +108,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notification/>
             </ProtectedRoute>
           }
         />

@@ -1,6 +1,31 @@
 const quizService = require('../services/quizService');
 
 /**
+ * @desc    Get all approved quizzes
+ * @route   GET /api/quizzes
+ * @access  Public / Authenticated Readers
+ */
+const getApprovedQuizzes = async (req, res) => {
+  try {
+    const user = req.user;
+    const quizzes = await quizService.getApprovedQuizzes(user);
+
+    res.status(200).json({
+      success: true,
+      count: quizzes.length,
+      data: quizzes
+    });
+  } catch (error) {
+    console.error('getApprovedQuizzes error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve approved quizzes',
+      error: error.message
+    });
+  }
+};
+
+/**
  * @desc    Create or update a quiz for an article
  * @route   POST /api/quizzes
  * @access  Private (Author, Admin)
@@ -54,10 +79,9 @@ const getQuizByArticle = async (req, res) => {
     });
   } catch (error) {
     console.error('getQuizByArticle error:', error);
-    res.status(500).json({
+    res.status(error.message.includes('not approved') ? 403 : 500).json({
       success: false,
-      message: 'Failed to retrieve quiz',
-      error: error.message
+      message: error.message || 'Failed to retrieve quiz'
     });
   }
 };
@@ -87,10 +111,9 @@ const getQuizById = async (req, res) => {
     });
   } catch (error) {
     console.error('getQuizById error:', error);
-    res.status(500).json({
+    res.status(error.message.includes('not approved') ? 403 : 500).json({
       success: false,
-      message: 'Failed to retrieve quiz',
-      error: error.message
+      message: error.message || 'Failed to retrieve quiz'
     });
   }
 };
@@ -148,6 +171,42 @@ const deleteQuiz = async (req, res) => {
 };
 
 /**
+ * @desc    Create / initialize an in-progress quiz attempt
+ * @route   POST /api/quizzes/:id/attempts
+ * @access  Public / Private (Readers, Users)
+ */
+const createQuizAttempt = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = req.user;
+
+    // If request contains answers directly, submit attempt directly
+    if (req.body && Array.isArray(req.body.answers)) {
+      const result = await quizService.submitAttempt(id, req.body.answers, user, req.body.attemptId);
+      return res.status(200).json({
+        success: true,
+        message: 'Quiz submitted successfully',
+        data: result
+      });
+    }
+
+    const session = await quizService.createAttempt(id, user);
+
+    res.status(201).json({
+      success: true,
+      message: 'Quiz attempt started successfully',
+      data: session
+    });
+  } catch (error) {
+    console.error('createQuizAttempt error:', error);
+    res.status(error.message.includes('unapproved') ? 403 : 400).json({
+      success: false,
+      message: error.message || 'Failed to initialize quiz attempt'
+    });
+  }
+};
+
+/**
  * @desc    Submit a quiz attempt and calculate score
  * @route   POST /api/quizzes/:id/attempt
  * @access  Public / Private (Readers, Users)
@@ -155,10 +214,10 @@ const deleteQuiz = async (req, res) => {
 const submitQuizAttempt = async (req, res) => {
   try {
     const { id } = req.params;
-    const { answers } = req.body;
+    const { answers, attemptId } = req.body;
     const user = req.user;
 
-    const result = await quizService.submitAttempt(id, answers, user);
+    const result = await quizService.submitAttempt(id, answers, user, attemptId);
 
     res.status(200).json({
       success: true,
@@ -167,7 +226,7 @@ const submitQuizAttempt = async (req, res) => {
     });
   } catch (error) {
     console.error('submitQuizAttempt error:', error);
-    res.status(400).json({
+    res.status(error.message.includes('unapproved') ? 403 : 400).json({
       success: false,
       message: error.message || 'Failed to process quiz submission'
     });
@@ -175,21 +234,47 @@ const submitQuizAttempt = async (req, res) => {
 };
 
 /**
+ * @desc    Get single quiz attempt details
+ * @route   GET /api/quizzes/attempts/:attemptId
+ * @access  Private / Public
+ */
+const getAttemptById = async (req, res) => {
+  try {
+    const { attemptId } = req.params;
+    const user = req.user;
+
+    const attempt = await quizService.getAttemptById(attemptId, user);
+
+    if (!attempt) {
+      return res.status(404).json({
+        success: false,
+        message: 'Quiz attempt not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: attempt
+    });
+  } catch (error) {
+    console.error('getAttemptById error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve attempt details',
+      error: error.message
+    });
+  }
+};
+
+/**
  * @desc    Get user's previous results for a quiz
  * @route   GET /api/quizzes/:id/results
- * @access  Private
+ * @access  Private / Public
  */
 const getQuizResults = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user ? req.user._id : null;
-
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required to view results history'
-      });
-    }
 
     const results = await quizService.getQuizResults(id, userId);
 
@@ -210,11 +295,11 @@ const getQuizResults = async (req, res) => {
 /**
  * @desc    Get all quiz attempts for logged-in user
  * @route   GET /api/quizzes/user/attempts
- * @access  Private
+ * @access  Private / Public
  */
 const getMyAttempts = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user ? req.user._id : null;
     const attempts = await quizService.getUserAttempts(userId);
 
     res.status(200).json({
@@ -232,12 +317,15 @@ const getMyAttempts = async (req, res) => {
 };
 
 module.exports = {
+  getApprovedQuizzes,
   createQuiz,
   getQuizByArticle,
   getQuizById,
   updateQuiz,
   deleteQuiz,
+  createQuizAttempt,
   submitQuizAttempt,
+  getAttemptById,
   getQuizResults,
   getMyAttempts
 };

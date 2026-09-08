@@ -14,8 +14,13 @@ const connectDB = async () => {
     const conn = await mongoose.connect(mongoUri);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
+<<<<<<< Updated upstream
     console.error(`⚠️ Database connection error: ${error.message}`);
     console.log('💡 Check MONGO_URI in backend/.env');
+=======
+    console.warn(`Database connection warning: ${error.message}`);
+    console.log(`Running in local in-memory fallback mode for Lumen CMS.`);
+>>>>>>> Stashed changes
   }
 };
 

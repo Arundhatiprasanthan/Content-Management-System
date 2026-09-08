@@ -6,66 +6,143 @@ import {
   Trophy,
   Check,
   X,
+<<<<<<< Updated upstream
+=======
+  PenLine,
+  RotateCcw,
+  History,
+  ArrowLeft,
+  BookOpen,
+  Layers,
+  Award
+>>>>>>> Stashed changes
 } from "lucide-react";
 
 import "./QuizResult.css";
 
+<<<<<<< Updated upstream
 function QuizResult({ result }) {
   // Temporary fallback data.
   // Baad mein QuizAttempt se actual result yahan aayega.
+=======
+function QuizResult({ result, onRetake, onViewHistory, onBackToQuizzes }) {
+  const navigate = useNavigate();
+
+  // Fallback if accessed directly
+>>>>>>> Stashed changes
   const quizResult = result || {
+    score: 2,
+    total: 2,
+    percentage: 100,
     questions: [
       {
-        question:
-          "ARPANET, the precursor to the internet, sent its first message in which year?",
+        question: "ARPANET, the precursor to the internet, sent its first message in which year?",
         correct: true,
-        explanation:
-          "ARPANET sent its first message on October 29, 1969, between UCLA and the Stanford Research Institute.",
+        selectedOption: 1,
+        correctAnswer: 1,
+        options: ["1965", "1969", "1973", "1979"],
+        explanation: "ARPANET sent its first message on October 29, 1969, between UCLA and the Stanford Research Institute."
       },
       {
-        question:
-          "What was the intended first message sent over ARPANET?",
-        correct: false,
-        explanation:
-          'The intended message was "Login" — only "Lo" was received before the system crashed.',
-      },
-    ],
+        question: "What does HTTP stand for?",
+        correct: true,
+        selectedOption: 0,
+        correctAnswer: 0,
+        options: [
+          "HyperText Transfer Protocol",
+          "HighText Transfer Protocol",
+          "HyperText Transmission Program",
+          "High Transfer Text Protocol"
+        ],
+        explanation: "HTTP stands for HyperText Transfer Protocol, the protocol used by web browsers and web servers."
+      }
+    ]
   };
 
-  const total = quizResult.questions.length;
-
-  const score = quizResult.questions.filter(
-    (question) => question.correct
-  ).length;
+  const total = quizResult.total || quizResult.questions?.length || 0;
+  const score =
+    quizResult.score !== undefined
+      ? quizResult.score
+      : (quizResult.questions || []).filter((q) => q.correct || q.isCorrect).length;
 
   const percentage =
-    total > 0 ? Math.round((score / total) * 100) : 0;
+    quizResult.percentage !== undefined
+      ? quizResult.percentage
+      : total > 0
+      ? Math.round((score / total) * 100)
+      : 0;
 
-  // Figma-style heading
   let heading = "Keep learning!";
+  let badgeText = "Needs Review";
+  let trophyClass = "trophy-review";
 
   if (percentage === 100) {
-    heading = "Well done!";
+    heading = "Outstanding! Perfect Score";
+    badgeText = "Mastery Achieved";
+    trophyClass = "trophy-success";
+  } else if (percentage >= 70) {
+    heading = "Well done! Passed";
+    badgeText = "Passed";
+    trophyClass = "trophy-good";
   } else if (percentage >= 50) {
     heading = "Good effort!";
+    badgeText = "Review Recommended";
+    trophyClass = "trophy-review";
   }
+
+  const handleRetake = () => {
+    if (onRetake) {
+      onRetake();
+    } else {
+      navigate("/quiz");
+    }
+  };
+
+  const handleHistory = () => {
+    if (onViewHistory) {
+      onViewHistory();
+    } else {
+      navigate("/quiz?view=history");
+    }
+  };
+
+  const handleBackToQuizzes = () => {
+    if (onBackToQuizzes) {
+      onBackToQuizzes();
+    } else {
+      navigate("/quiz");
+    }
+  };
+
+  const handleBackToArticle = () => {
+    if (quizResult.articleId) {
+      const artId = quizResult.articleId._id || quizResult.articleId.id || quizResult.articleId;
+      navigate(`/article/${artId}`);
+    } else {
+      navigate("/browse");
+    }
+  };
 
   return (
     <div className="quiz-result-page">
-
       {/* ================= NAVBAR ================= */}
-
       <header className="result-navbar">
+<<<<<<< Updated upstream
 
         <div className="result-brand">
           <div className="result-brand-icon">
             ▣
           </div>
 
+=======
+        <div className="result-brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
+          <div className="result-brand-icon">▣</div>
+>>>>>>> Stashed changes
           <span>Lumen</span>
         </div>
 
         <nav className="result-nav">
+<<<<<<< Updated upstream
 
           <button type="button">
             <Home size={13} strokeWidth={1.7} />
@@ -90,122 +167,186 @@ function QuizResult({ result }) {
             <option value="reader">
               Lena Kaufmann (reader)
             </option>
+=======
+          <button type="button" onClick={() => navigate("/home")}>
+            <Home size={14} strokeWidth={1.7} />
+            Home
+          </button>
+          <button type="button" onClick={() => navigate("/browse")}>
+            <Search size={14} strokeWidth={1.7} />
+            Browse
+          </button>
+          <button type="button" onClick={handleBackToQuizzes}>
+            <Layers size={14} strokeWidth={1.7} />
+            Quizzes
+          </button>
+          <button type="button" onClick={handleHistory}>
+            <History size={14} strokeWidth={1.7} />
+            Attempt History
+          </button>
+          <button type="button" onClick={() => navigate("/author/article")}>
+            <PenLine size={14} strokeWidth={1.7} />
+            Write
+          </button>
+        </nav>
+
+        <div className="result-user">
+          <select
+            defaultValue="reader"
+            onChange={(e) => {
+              if (e.target.value === "author") {
+                navigate("/author/article");
+              }
+            }}
+          >
+            <option value="reader">Lena Kaufmann (reader)</option>
+            <option value="author">Priya Mehta (author)</option>
+>>>>>>> Stashed changes
           </select>
 
-          <Bell
-            size={15}
-            strokeWidth={1.7}
-          />
-
-          <div className="result-avatar">
-            LK
-          </div>
-
+          <Bell size={15} strokeWidth={1.7} />
+          <div className="result-avatar">LK</div>
         </div>
-
       </header>
 
-      {/* ================= RESULT ================= */}
-
+      {/* ================= RESULT HERO ================= */}
       <main className="result-container">
-
-        {/* Trophy */}
-
-        <div
-          className={`result-trophy ${
-            percentage === 100
-              ? "trophy-success"
-              : "trophy-normal"
-          }`}
-        >
-          <Trophy
-            size={31}
-            strokeWidth={1.8}
-          />
-        </div>
-
-        {/* Heading */}
-
-        <h1>{heading}</h1>
-
-        {/* Score */}
-
-        <p className="score-text">
-          You scored {score} of {total} ({percentage}%)
-        </p>
-
-        {/* Score Bar */}
-
-        <div className="score-bar">
-          <div
-            className="score-fill"
-            style={{
-              width: `${percentage}%`,
-            }}
-          ></div>
-        </div>
-
-        {/* ================= QUESTIONS ================= */}
-
-        <div className="result-questions">
-
-          {quizResult.questions.map(
-            (item, index) => (
-
-              <div
-                className={`result-question ${
-                  item.correct
-                    ? "correct"
-                    : "incorrect"
-                }`}
-                key={index}
-              >
-
-                <div className="result-question-title">
-
-                  <span className="result-status">
-
-                    {item.correct ? (
-                      <Check
-                        size={16}
-                        strokeWidth={2}
-                      />
-                    ) : (
-                      <X
-                        size={16}
-                        strokeWidth={2}
-                      />
-                    )}
-
-                  </span>
-
-                  <span>
-                    {item.question}
-                  </span>
-
-                </div>
-
-                <p>
-                  {item.explanation}
-                </p>
-
-              </div>
-            )
+        {/* Navigation Breadcrumb */}
+        <div className="result-top-actions">
+          <button type="button" className="result-back-link" onClick={handleBackToQuizzes}>
+            <ArrowLeft size={14} /> Back to All Quizzes
+          </button>
+          {quizResult.articleId && (
+            <button type="button" className="result-article-link" onClick={handleBackToArticle}>
+              <BookOpen size={14} /> Back to Article
+            </button>
           )}
-
         </div>
 
-        {/* Back */}
+        <div className="result-header-card">
+          <div className={`result-trophy ${trophyClass}`}>
+            <Trophy size={34} strokeWidth={1.8} />
+          </div>
 
+<<<<<<< Updated upstream
         <button
           type="button"
           className="back-to-article"
         >
           Back to Article
         </button>
+=======
+          <div className="result-badge-pill">{badgeText}</div>
+          <h1 className="result-heading">{heading}</h1>
+>>>>>>> Stashed changes
 
+          <p className="score-text">
+            You scored <strong>{score}</strong> out of <strong>{total}</strong> questions ({percentage}%)
+          </p>
+
+          <div className="score-bar">
+            <div
+              className={`score-fill ${percentage >= 70 ? "score-fill-pass" : "score-fill-review"}`}
+              style={{ width: `${percentage}%` }}
+            ></div>
+          </div>
+
+          {/* Action Row */}
+          <div className="result-actions-row">
+            <button type="button" className="retake-quiz-action" onClick={handleRetake}>
+              <RotateCcw size={15} /> Retake Quiz
+            </button>
+            <button type="button" className="history-quiz-action" onClick={handleHistory}>
+              <History size={15} /> View Attempt History
+            </button>
+          </div>
+        </div>
+
+        {/* ================= QUESTIONS BREAKDOWN ================= */}
+        <div className="result-questions-section">
+          <div className="section-title-row">
+            <h2>Detailed Review & Explanations</h2>
+            <span className="breakdown-tag">
+              {score} Correct • {total - score} Incorrect
+            </span>
+          </div>
+
+          <div className="result-questions-list">
+            {(quizResult.questions || []).map((item, index) => {
+              const isCorrect = item.correct || item.isCorrect;
+              const hasOptions = Array.isArray(item.options) && item.options.length > 0;
+
+              return (
+                <div
+                  className={`result-question-card ${isCorrect ? "card-correct" : "card-incorrect"}`}
+                  key={index}
+                >
+                  <div className="card-header-row">
+                    <span className={`result-indicator-badge ${isCorrect ? "badge-correct" : "badge-incorrect"}`}>
+                      {isCorrect ? (
+                        <>
+                          <Check size={14} strokeWidth={2.4} /> Correct
+                        </>
+                      ) : (
+                        <>
+                          <X size={14} strokeWidth={2.4} /> Incorrect
+                        </>
+                      )}
+                    </span>
+                    <span className="question-number">Question {index + 1}</span>
+                  </div>
+
+                  <h3 className="result-question-text">{item.question}</h3>
+
+                  {/* If options available, display the options with user and correct selections */}
+                  {hasOptions && (
+                    <div className="result-options-review">
+                      {item.options.map((opt, optIdx) => {
+                        const isUserChoice = item.selectedOption === optIdx;
+                        const isAnswer = item.correctAnswer === optIdx;
+
+                        let optClass = "opt-neutral";
+                        if (isAnswer) {
+                          optClass = "opt-correct-answer";
+                        } else if (isUserChoice && !isCorrect) {
+                          optClass = "opt-wrong-choice";
+                        }
+
+                        return (
+                          <div className={`review-option ${optClass}`} key={optIdx}>
+                            <span className="review-letter">
+                              {String.fromCharCode(65 + optIdx)}
+                            </span>
+                            <span className="review-text">{opt}</span>
+                            {isAnswer && (
+                              <span className="correct-tag">
+                                <Check size={12} /> Correct Answer
+                              </span>
+                            )}
+                            {isUserChoice && !isCorrect && (
+                              <span className="wrong-tag">
+                                <X size={12} /> Your Choice
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Explanation box */}
+                  {item.explanation && (
+                    <div className="result-explanation-box">
+                      <strong>Explanation:</strong>
+                      <p>{item.explanation}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </main>
-
     </div>
   );
 }

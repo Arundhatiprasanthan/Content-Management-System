@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -12,6 +13,9 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 
+=======
+import { FiBell, FiBookOpen, FiSearch, FiUser, FiEdit3, FiHelpCircle } from "react-icons/fi";
+>>>>>>> Stashed changes
 import { LuLayoutDashboard } from "react-icons/lu";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -273,6 +277,7 @@ function Navbar() {
           <span>Browse</span>
         </NavLink>
 
+<<<<<<< Updated upstream
         {/* AUTHOR → WRITE */}
         {currentRole === "Author" && (
           <NavLink
@@ -285,6 +290,27 @@ function Navbar() {
             <span>Write</span>
           </NavLink>
         )}
+=======
+        <NavLink
+          to="/quiz"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiHelpCircle />
+          <span>Quizzes</span>
+        </NavLink>
+
+        <NavLink
+          to="/author/article"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiEdit3 />
+          <span>Write</span>
+        </NavLink>
+>>>>>>> Stashed changes
 
         {/* ADMIN → ADMIN */}
         {currentRole === "Admin" && (

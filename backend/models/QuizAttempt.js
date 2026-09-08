@@ -42,19 +42,28 @@ const quizAttemptSchema = new mongoose.Schema(
     answers: [attemptAnswerSchema],
     score: {
       type: Number,
-      required: true,
+      default: 0,
       min: 0
     },
     total: {
       type: Number,
-      required: true,
-      min: 1
+      default: 0,
+      min: 0
     },
     percentage: {
       type: Number,
-      required: true,
+      default: 0,
       min: 0,
       max: 100
+    },
+    status: {
+      type: String,
+      enum: ['in-progress', 'completed'],
+      default: 'completed'
+    },
+    startedAt: {
+      type: Date,
+      default: Date.now
     },
     submittedAt: {
       type: Date,

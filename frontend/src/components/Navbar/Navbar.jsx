@@ -269,8 +269,19 @@ function Navbar() {
             `navigation-button ${isActive ? "active" : ""}`
           }
         >
-          <FiSearch />
+          <FiBookOpen />
           <span>Browse</span>
+        </NavLink>
+
+        {/* Search */}
+        <NavLink
+          to="/search"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiSearch />
+          <span>Search</span>
         </NavLink>
 
         {/* AUTHOR → WRITE */}

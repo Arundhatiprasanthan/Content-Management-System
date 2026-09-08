@@ -41,6 +41,7 @@ import QuizAttempt from "./pages/reader/QuizAttempt";
 import QuizResult from "./pages/reader/QuizResult";
 import Home from "./pages/reader/Home/Home";
 import Browse from "./pages/reader/Browse/Browse";
+import Search from "./pages/reader/Search/Search";
 import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
 
 function App() {
@@ -75,6 +76,11 @@ function App() {
         <Route
           path="/browse"
           element={<Browse />}
+        />
+
+        <Route
+          path="/search"
+          element={<Search />}
         />
 
         <Route
@@ -216,7 +222,7 @@ function App() {
           path="/"
           element={
             <Navigate
-              to="/login"
+              to="/home"
               replace
             />
           }
@@ -231,7 +237,7 @@ function App() {
           path="*"
           element={
             <Navigate
-              to="/login"
+              to="/home"
               replace
             />
           }

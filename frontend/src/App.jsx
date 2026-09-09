@@ -42,6 +42,7 @@ import QuizResult from "./pages/reader/QuizResult";
 import Home from "./pages/reader/Home/Home";
 import Browse from "./pages/reader/Browse/Browse";
 import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
+import Chat from "./pages/chat/Chat";
 
 function App() {
   return (
@@ -108,6 +109,20 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* =========================
+           PERSONAL CHAT
+           All logged-in users
+        ========================== */}
+
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat />
+        </ProtectedRoute>
+      }
+    />
 
 
         {/* =========================

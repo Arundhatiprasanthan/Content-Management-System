@@ -96,6 +96,14 @@ try {
 }
 
 // =========================
+// CHAT ROUTES
+// =========================
+
+const chatRoutes = require("./routes/chatRoutes");
+
+app.use("/api/chat", chatRoutes);
+
+// =========================
 // HEALTH CHECK
 // =========================
 

@@ -10,6 +10,7 @@ import {
   FiLogIn,
   FiCheck,
   FiTrash2,
+  FiMessageCircle,
 } from "react-icons/fi";
 
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -26,6 +27,7 @@ function Navbar() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [chatUnreadCount, setChatUnreadCount] = useState(0);
 
   const notificationRef = useRef(null);
 
@@ -84,15 +86,49 @@ function Navbar() {
     }
   };
 
+  // Fetch unread chat messages
+const fetchChatUnreadCount = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setChatUnreadCount(0);
+      return;
+    }
+
+    const response = await fetch(
+      "http://localhost:5000/api/chat/unread-count",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+      setChatUnreadCount(data.unreadCount || 0);
+    }
+  } catch (error) {
+    console.error(
+      "Failed to fetch chat unread count:",
+      error
+    );
+  }
+};
+
   // Fetch notifications when user logs in
   useEffect(() => {
-    if (user) {
-      fetchNotifications();
-    } else {
-      setNotifications([]);
-      setUnreadCount(0);
-    }
-  }, [user]);
+  if (user) {
+    fetchNotifications();
+    fetchChatUnreadCount();
+  } else {
+    setNotifications([]);
+    setUnreadCount(0);
+    setChatUnreadCount(0);
+  }
+}, [user]);
 
   // Close notification dropdown when clicking outside
   useEffect(() => {
@@ -272,6 +308,17 @@ function Navbar() {
           <FiSearch />
           <span>Browse</span>
         </NavLink>
+
+        {/* Chat */}
+        <NavLink
+            to="/chat"
+            className={({ isActive }) =>
+              `navigation-button ${isActive ? "active" : ""}`
+        }
+      >
+         <FiMessageCircle />
+          <span>Chat</span>
+       </NavLink>
 
         {/* AUTHOR → WRITE */}
         {currentRole === "Author" && (

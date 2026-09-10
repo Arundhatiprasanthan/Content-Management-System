@@ -1,18 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-
-import {
-  FiBell,
-  FiBookOpen,
-  FiSearch,
-  FiUser,
-  FiPenTool,
-  FiLogOut,
-  FiLogIn,
-  FiCheck,
-  FiTrash2,
-  FiMessageCircle,
-} from "react-icons/fi";
-
+import { FiBell, FiBookOpen, FiSearch, FiUser, FiPenTool, FiLogOut, FiLogIn, FiCheck, FiTrash2, FiMessageCircle, FiEdit3, FiHelpCircle } from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -344,6 +330,27 @@ const fetchChatUnreadCount = async () => {
             <span>Write</span>
           </NavLink>
         )}
+=======
+        <NavLink
+          to="/quiz"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiHelpCircle />
+          <span>Quizzes</span>
+        </NavLink>
+
+        <NavLink
+          to="/author/article"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiEdit3 />
+          <span>Write</span>
+        </NavLink>
+>>>>>>> Stashed changes
 
         {/* ADMIN → ADMIN */}
         {currentRole === "Admin" && (

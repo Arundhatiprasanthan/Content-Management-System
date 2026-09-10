@@ -44,6 +44,9 @@ import Browse from "./pages/reader/Browse/Browse";
 import Search from "./pages/reader/Search/Search";
 import ArticleDetails from "./pages/reader/ArticleDetails/ArticleDetails";
 import Chat from "./pages/chat/Chat";
+import UserManagement from "./modules/admin/pages/UserManagement";
+import Reports from "./modules/admin/pages/Reports";
+import Notification from "./pages/Notification/Notification";
 
 function App() {
   return (
@@ -116,6 +119,15 @@ function App() {
           }
         />
 
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notification />
+            </ProtectedRoute>
+          }
+        />
+
         {/* =========================
            PERSONAL CHAT
            All logged-in users
@@ -126,9 +138,9 @@ function App() {
           element={
             <ProtectedRoute>
               <Chat />
-        </ProtectedRoute>
-      }
-    />
+            </ProtectedRoute>
+          }
+        />
 
 
         {/* =========================
@@ -174,6 +186,24 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>
               <ReviewQueue />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <UserManagement/>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/reports"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <Reports/>
             </ProtectedRoute>
           }
         />

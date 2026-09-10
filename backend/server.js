@@ -89,12 +89,6 @@ try {
 try {
   const notificationRoutes = require("./routes/notificationRoutes");
   app.use("/api/notifications", notificationRoutes);
-} catch (err) {}
-
-  app.use(
-    "/api/notifications",
-    notificationRoutes
-  );
 } catch (err) {
   console.error(
     "Notification routes could not be loaded:",

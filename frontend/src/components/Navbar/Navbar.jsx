@@ -1,4 +1,5 @@
-import { FiBell, FiBookOpen, FiSearch, FiUser, FiPenTool, FiLogOut, FiLogIn, FiCheck, FiTrash2, FiMessageCircle, FiEdit3, FiHelpCircle } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { FiBell, FiBookOpen, FiSearch, FiUser, FiPenTool, FiLogOut, FiLogIn, FiMessageCircle, FiEdit3, FiHelpCircle } from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -6,31 +7,24 @@ import "./Navbar.css";
 function Navbar() {
   const navigate = useNavigate();
 
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+
+    if (!savedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(savedUser);
+    } catch (error) {
+      console.error("Failed to parse saved user:", error);
+      return null;
+    }
+  });
   const [showMenu, setShowMenu] = useState(false);
 
   const [unreadCount, setUnreadCount] = useState(0);
-  const [showNotifications, setShowNotifications] = useState(false);
   const [chatUnreadCount, setChatUnreadCount] = useState(0);
-
-  const notificationRef = useRef(null);
-
-  // Get logged-in user from localStorage
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error("Failed to parse saved user:", error);
-        setUser(null);
-      }
-    } else {
-      setUser(null);
-    }
-  }, []);
 
   // Logout
   const handleLogout = () => {
@@ -104,15 +98,19 @@ const fetchChatUnreadCount = async () => {
 
   // Fetch notifications when user logs in
   useEffect(() => {
-  if (user) {
-    fetchNotifications();
-    fetchChatUnreadCount();
-  } else {
-    setNotifications([]);
-    setUnreadCount(0);
-    setChatUnreadCount(0);
-  }
-}, [user]);
+    const refreshCounts = () => {
+      if (user) {
+        fetchNotifications();
+        fetchChatUnreadCount();
+      } else {
+        setUnreadCount(0);
+        setChatUnreadCount(0);
+      }
+    };
+
+    const refreshTimer = setTimeout(refreshCounts, 0);
+    return () => clearTimeout(refreshTimer);
+  }, [user]);
 
   // LISTEN FOR NOTIFICATION UPDATES
   useEffect(() => {
@@ -203,12 +201,19 @@ const fetchChatUnreadCount = async () => {
         >
           <span>My Subscriptions</span>
         </NavLink>
+        <NavLink
+          to="/chat"
           className={({ isActive }) =>
             `navigation-button ${isActive ? "active" : ""}`
           }
         >
           <FiMessageCircle />
           <span>Chat</span>
+          {chatUnreadCount > 0 && (
+            <span className="notification-badge">
+              {chatUnreadCount > 99 ? "99+" : chatUnreadCount}
+            </span>
+          )}
         </NavLink>
 
 
@@ -224,7 +229,7 @@ const fetchChatUnreadCount = async () => {
             <span>Write</span>
           </NavLink>
         )}
-=======
+
         <NavLink
           to="/quiz"
           className={({ isActive }) =>
@@ -244,7 +249,6 @@ const fetchChatUnreadCount = async () => {
           <FiEdit3 />
           <span>Write</span>
         </NavLink>
->>>>>>> Stashed changes
 
         {/* ADMIN → ADMIN */}
         {currentRole === "Admin" && (

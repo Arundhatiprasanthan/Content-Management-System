@@ -259,12 +259,9 @@ function ArticleDetails() {
             </div>
 
             <div className="quiz-button-container">
-<button className="quiz-button" onClick={() => navigate(`/quiz?articleId=${article.id}`)}>
-=======
-              <button 
-                className="quiz-button" 
-                onClick={() => navigate('/quiz')}
->>>>>>> origin/feature/article-editor
+              <button
+                className="quiz-button"
+                onClick={() => navigate(`/quiz?articleId=${article.id}`)}
               >
                 Take the Quiz
               </button>

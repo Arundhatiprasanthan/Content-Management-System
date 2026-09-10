@@ -16,27 +16,6 @@ function AuthorArticle() {
   const [tags, setTags] = useState("");
   const [content, setContent] = useState("");
 
-  const handleSaveDraft = () => {
-    console.log("Save Draft", {
-      title,
-      category,
-      tags,
-      content,
-    });
-    alert("Draft saved successfully!");
-  };
-
-  const handleSubmit = () => {
-    console.log("Submit for Review", {
-      title,
-      category,
-      tags,
-      content,
-    });
-    alert("Article submitted for review!");
-    navigate("/home");
-  };
-
   // =========================
   // QUIZ STATE
   // =========================
@@ -425,7 +404,8 @@ function AuthorArticle() {
             </p>
           </div>
 
-<button type="button" className="cancel-button" onClick={() => navigate("/home")}>
+          <button
+            type="button"
             className="cancel-button"
             onClick={() => navigate("/home")}
           >

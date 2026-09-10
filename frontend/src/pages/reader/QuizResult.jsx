@@ -13,10 +13,7 @@ import {
   ArrowLeft,
   BookOpen,
   Layers,
-  Award
-=======
-  PenLine,
->>>>>>> origin/feature/article-editor
+  Award,
 } from "lucide-react";
 
 import "./QuizResult.css";
@@ -163,11 +160,6 @@ function QuizResult({ result, onRetake, onViewHistory, onBackToQuizzes }) {
           >
             <option value="reader">Lena Kaufmann (reader)</option>
             <option value="author">Priya Mehta (author)</option>
-=======
-            <option value="author">
-              Priya Mehta (author)
-            </option>
->>>>>>> origin/feature/article-editor
           </select>
 
           <Bell size={15} strokeWidth={1.7} />

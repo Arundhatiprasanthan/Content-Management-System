@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   Search,
@@ -6,8 +7,6 @@ import {
   Trophy,
   Check,
   X,
-<<<<<<< Updated upstream
-=======
   PenLine,
   RotateCcw,
   History,
@@ -15,21 +14,17 @@ import {
   BookOpen,
   Layers,
   Award
->>>>>>> Stashed changes
+=======
+  PenLine,
+>>>>>>> origin/feature/article-editor
 } from "lucide-react";
 
 import "./QuizResult.css";
 
-<<<<<<< Updated upstream
-function QuizResult({ result }) {
-  // Temporary fallback data.
-  // Baad mein QuizAttempt se actual result yahan aayega.
-=======
 function QuizResult({ result, onRetake, onViewHistory, onBackToQuizzes }) {
   const navigate = useNavigate();
 
   // Fallback if accessed directly
->>>>>>> Stashed changes
   const quizResult = result || {
     score: 2,
     total: 2,
@@ -127,47 +122,14 @@ function QuizResult({ result, onRetake, onViewHistory, onBackToQuizzes }) {
     <div className="quiz-result-page">
       {/* ================= NAVBAR ================= */}
       <header className="result-navbar">
-<<<<<<< Updated upstream
-
-        <div className="result-brand">
+        <div className="result-brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
           <div className="result-brand-icon">
             ▣
           </div>
-
-=======
-        <div className="result-brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
-          <div className="result-brand-icon">▣</div>
->>>>>>> Stashed changes
           <span>Lumen</span>
         </div>
 
         <nav className="result-nav">
-<<<<<<< Updated upstream
-
-          <button type="button">
-            <Home size={13} strokeWidth={1.7} />
-            Home
-          </button>
-
-          <button type="button">
-            <Search size={13} strokeWidth={1.7} />
-            Browse
-          </button>
-
-          <button type="button">
-            <User size={13} strokeWidth={1.7} />
-            Profile
-          </button>
-
-        </nav>
-
-        <div className="result-user">
-
-          <select defaultValue="reader">
-            <option value="reader">
-              Lena Kaufmann (reader)
-            </option>
-=======
           <button type="button" onClick={() => navigate("/home")}>
             <Home size={14} strokeWidth={1.7} />
             Home
@@ -201,7 +163,11 @@ function QuizResult({ result, onRetake, onViewHistory, onBackToQuizzes }) {
           >
             <option value="reader">Lena Kaufmann (reader)</option>
             <option value="author">Priya Mehta (author)</option>
->>>>>>> Stashed changes
+=======
+            <option value="author">
+              Priya Mehta (author)
+            </option>
+>>>>>>> origin/feature/article-editor
           </select>
 
           <Bell size={15} strokeWidth={1.7} />
@@ -228,17 +194,8 @@ function QuizResult({ result, onRetake, onViewHistory, onBackToQuizzes }) {
             <Trophy size={34} strokeWidth={1.8} />
           </div>
 
-<<<<<<< Updated upstream
-        <button
-          type="button"
-          className="back-to-article"
-        >
-          Back to Article
-        </button>
-=======
           <div className="result-badge-pill">{badgeText}</div>
           <h1 className="result-heading">{heading}</h1>
->>>>>>> Stashed changes
 
           <p className="score-text">
             You scored <strong>{score}</strong> out of <strong>{total}</strong> questions ({percentage}%)

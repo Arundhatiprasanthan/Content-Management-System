@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import QuizCreator from "./QuizCreator";
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -8,7 +7,6 @@ import "./AuthorArticle.css";
 
 function AuthorArticle() {
   const navigate = useNavigate();
-
   // =========================
   // ARTICLE STATE
   // =========================
@@ -17,6 +15,27 @@ function AuthorArticle() {
   const [category, setCategory] = useState("Science");
   const [tags, setTags] = useState("");
   const [content, setContent] = useState("");
+
+  const handleSaveDraft = () => {
+    console.log("Save Draft", {
+      title,
+      category,
+      tags,
+      content,
+    });
+    alert("Draft saved successfully!");
+  };
+
+  const handleSubmit = () => {
+    console.log("Submit for Review", {
+      title,
+      category,
+      tags,
+      content,
+    });
+    alert("Article submitted for review!");
+    navigate("/home");
+  };
 
   // =========================
   // QUIZ STATE
@@ -391,7 +410,6 @@ function AuthorArticle() {
   return (
     <div className="author-page">
       <Navbar />
-
       <main className="article-container">
 
         {/* =========================
@@ -407,8 +425,7 @@ function AuthorArticle() {
             </p>
           </div>
 
-          <button
-            type="button"
+<button type="button" className="cancel-button" onClick={() => navigate("/home")}>
             className="cancel-button"
             onClick={() => navigate("/home")}
           >

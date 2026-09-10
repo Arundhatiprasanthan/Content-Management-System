@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-=======
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -43,9 +39,10 @@ import "./QuizAttempt.css";
 >>>>>>> Stashed changes
 
 function QuizAttempt() {
-  const { articleId } = useParams();
   const navigate = useNavigate();
-<<<<<<< Updated upstream
+  const [searchParams] = useSearchParams();
+  const articleId = searchParams.get("articleId");
+  const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [quiz, setQuiz] = useState(null);
   const [answers, setAnswers] = useState({});
@@ -457,7 +454,6 @@ function QuizAttempt() {
 
   return (
     <div className="quiz-page">
-<<<<<<< Updated upstream
 
       {/* ======================================
           QUIZ HEADER
@@ -471,7 +467,7 @@ function QuizAttempt() {
         )}
 
         <p>
-          {quiz.questions.length}{" "}
+          {quiz.questions.length} {" "}
           {quiz.questions.length === 1
             ? "Question"
             : "Questions"}
@@ -496,7 +492,7 @@ function QuizAttempt() {
             >
 
               <h3>
-                {questionIndex + 1}.{" "}
+                {questionIndex + 1}. {" "}
                 {question.question}
               </h3>
 
@@ -579,51 +575,48 @@ function QuizAttempt() {
         </button>
 
       </div>
-=======
-      {/* ================= HEADER / NAVBAR ================= */}
-      <header className="quiz-navbar">
-        <div className="quiz-brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
-          <div className="quiz-brand-icon">▣</div>
+
           <span>Lumen</span>
         </div>
 
         <nav className="quiz-nav">
           <button type="button" onClick={() => navigate("/home")}>
-            <Home size={14} strokeWidth={1.7} />
+            <Home
+              size={13}
+              strokeWidth={1.7}
+            />
             Home
           </button>
+
           <button type="button" onClick={() => navigate("/browse")}>
-            <Search size={14} strokeWidth={1.7} />
+            <Search
+              size={13}
+              strokeWidth={1.7}
+            />
             Browse
           </button>
-          <button
-            type="button"
-            className={viewMode === "list" || viewMode === "instructions" ? "active" : ""}
-            onClick={() => {
-              setViewMode("list");
-              setActiveQuiz(null);
-              setSearchParams({});
-            }}
-          >
-            <Layers size={14} strokeWidth={1.7} />
-            Quizzes
-          </button>
-          <button
-            type="button"
-            className={viewMode === "history" ? "active" : ""}
-            onClick={() => setViewMode("history")}
-          >
-            <History size={14} strokeWidth={1.7} />
-            Attempt History
-          </button>
+
           <button type="button" onClick={() => navigate("/author/article")}>
-            <PenLine size={14} strokeWidth={1.7} />
+            <PenLine
+              size={13}
+              strokeWidth={1.7}
+            />
             Write
           </button>
+
+          <button type="button" onClick={() => navigate("/home")}>
+            <User
+              size={13}
+              strokeWidth={1.7}
+            />
+            Profile
+          </button>
+
         </nav>
 
         <div className="quiz-user">
-          <select
+
+          <select 
             defaultValue="reader"
             onChange={(e) => {
               if (e.target.value === "author") {
@@ -631,8 +624,12 @@ function QuizAttempt() {
               }
             }}
           >
-            <option value="reader">Lena Kaufmann (reader)</option>
-            <option value="author">Priya Mehta (author)</option>
+            <option value="reader">
+              Lena Kaufmann (reader)
+            </option>
+            <option value="author">
+              Priya Mehta (author)
+            </option>
           </select>
 
           <Bell className="quiz-bell" size={15} strokeWidth={1.7} />
@@ -679,8 +676,15 @@ function QuizAttempt() {
                     (h) => (h.quizId?._id || h.quizId) === quiz._id
                   );
 
-                  return (
-                    <div className="approved-quiz-card" key={quiz._id}>
+        <button
+          type="button"
+          className="back-article"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft size={14} />
+        </button>
+
+                  <div className="approved-quiz-card" key={quiz._id}>
                       <div className="card-top">
                         <span className="quiz-category-tag">
                           {quiz.articleId?.category || "Technology"}

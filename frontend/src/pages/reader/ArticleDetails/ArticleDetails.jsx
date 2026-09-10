@@ -252,15 +252,12 @@ function ArticleDetails() {
             </div>
 
             <div className="quiz-button-container">
-<<<<<<< Updated upstream
-              <button
-                className="quiz-button"
-                onClick={handleTakeQuiz}
+<button className="quiz-button" onClick={() => navigate(`/quiz?articleId=${article.id}`)}>
 =======
               <button 
                 className="quiz-button" 
-                onClick={() => navigate(`/quiz?articleId=${article.id}`)}
->>>>>>> Stashed changes
+                onClick={() => navigate('/quiz')}
+>>>>>>> origin/feature/article-editor
               >
                 Take the Quiz
               </button>

@@ -1,12 +1,12 @@
 import { FiBell, FiBookOpen, FiSearch, FiUser, FiPenTool, FiLogOut, FiLogIn, FiCheck, FiTrash2, FiMessageCircle, FiEdit3, FiHelpCircle } from "react-icons/fi";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { NavLink, useNavigate } from "react-router-dom";
-
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -150,18 +150,13 @@ const fetchChatUnreadCount = async () => {
   return (
     <div className="navbar-container">
 
-      {/* Logo */}
-      <div
-        className="logo"
-        onClick={() => navigate("/home")}
-        style={{ cursor: "pointer" }}
-      >
+      <Link to="/home" className="logo" style={{ textDecoration: "none", color: "inherit" }}>
         <div className="logo-icon-box">
           <FiBookOpen />
         </div>
 
         <h2>Lumen</h2>
-      </div>
+</Link>
 
       {/* Navigation */}
       <div className="navigation-link">
@@ -260,7 +255,17 @@ const fetchChatUnreadCount = async () => {
 
         {/* Profile */}
         <NavLink
-          to="/profile"
+          to="/author/article"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiEdit3 />
+          <span>Write</span>
+        </NavLink>
+
+        <NavLink
+          to="/home"
           className={({ isActive }) =>
             `navigation-button ${isActive ? "active" : ""}`
           }
@@ -272,6 +277,7 @@ const fetchChatUnreadCount = async () => {
 
       {/* User section */}
       <div className="user-info">
+
 
         {isLoggedIn ? (
           <>
@@ -395,6 +401,7 @@ const fetchChatUnreadCount = async () => {
             Login / Register
           </button>
         )}
+
 
       </div>
     </div>

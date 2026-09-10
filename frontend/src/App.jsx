@@ -111,12 +111,15 @@ function App() {
         ========================== */}
 
         <Route
+<Route path="/" element={<Navigate to="/home" replace />} />
+        <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           }
+        />
         />
 
         <Route
@@ -280,12 +283,7 @@ function App() {
 
         <Route
           path="*"
-          element={
-            <Navigate
-              to="/home"
-              replace
-            />
-          }
+element={<Navigate to="/home" replace />}
         />
 
       </Routes>

@@ -194,9 +194,15 @@ const fetchChatUnreadCount = async () => {
           <span>Search</span>
         </NavLink>
 
-        {/* Chat */}
+        {/* My Subscriptions */}
         <NavLink
-          to="/chat"
+          to="/my-subscriptions"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <span>My Subscriptions</span>
+        </NavLink>
           className={({ isActive }) =>
             `navigation-button ${isActive ? "active" : ""}`
           }
@@ -409,4 +415,3 @@ const fetchChatUnreadCount = async () => {
 }
 
 export default Navbar;
-

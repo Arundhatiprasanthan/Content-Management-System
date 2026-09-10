@@ -48,6 +48,11 @@ import UserManagement from "./modules/admin/pages/UserManagement";
 import Reports from "./modules/admin/pages/Reports";
 import Notification from "./pages/Notification/Notification";
 
+// =========================
+// Subscription
+// =========================
+import MySubscriptions from "./pages/reader/MySubscriptions";
+
 function App() {
   return (
     <BrowserRouter>
@@ -102,6 +107,21 @@ function App() {
         <Route
           path="/quiz/result"
           element={<QuizResult />}
+        />
+
+
+        {/* =========================
+            MY SUBSCRIPTIONS
+            Logged-in users only
+        ========================== */}
+
+        <Route
+          path="/my-subscriptions"
+          element={
+            <ProtectedRoute>
+              <MySubscriptions />
+            </ProtectedRoute>
+          }
         />
 
 
@@ -213,17 +233,23 @@ function App() {
 
         {/* Article Review */}
 
- <Route
-  path="/quiz/:articleId"
-  element={<QuizAttempt />}
-/>
+        {/* =========================
+            ARTICLE REVIEW
+        ========================== */}
 
-<Route
-  path="/quiz/result"
-  element={<QuizResult />}
-/>
+        <Route
+          path="/admin/review/:articleId"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <ArticleReview />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Quiz Review */}
+
+        {/* =========================
+            QUIZ REVIEW
+        ========================== */}
 
         <Route
           path="/admin/review/quiz/:id"

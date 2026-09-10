@@ -91,14 +91,30 @@ try {
   app.use("/api/notifications", notificationRoutes);
 } catch (err) {}
 
-// =========================
-// CHAT ROUTES
-// =========================
-
+  app.use(
+    "/api/notifications",
+    notificationRoutes
+  );
+} catch (err) {
+  console.error(
+    "Notification routes could not be loaded:",
+    err.message
+  );
+}
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 
 app.use("/api/chat", chatRoutes);
 
+app.use(
+  "/api/subscriptions",
+  subscriptionRoutes
+);
+
+app.use(
+  "/api/subscriptions",
+  subscriptionRoutes
+);
 // =========================
 // HEALTH CHECK
 // =========================

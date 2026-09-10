@@ -171,23 +171,18 @@ function ReviewQueue() {
   // REVIEW ARTICLE
   // ==========================================
 
-  const handleArticleReview = (article) => {
-    console.log(
-      "========== ARTICLE REVIEW CLICKED =========="
-    );
+ const handleArticleReview = (article) => {
+  console.log("========== ARTICLE REVIEW CLICKED ==========");
+  console.log("Article:", article);
+  console.log("Article ID:", article?._id);
 
-    console.log("Article:", article);
-    console.log("Article ID:", article?._id);
+  if (!article?._id) {
+    alert("Article ID is missing.");
+    return;
+  }
 
-    if (!article?._id) {
-      alert("Article ID is missing.");
-      return;
-    }
-
-    navigate(
-      `/admin/review/article/${article._id}`
-    );
-  };
+  navigate(`/admin/review/${article._id}`);
+};
 
   // ==========================================
   // REVIEW QUIZ

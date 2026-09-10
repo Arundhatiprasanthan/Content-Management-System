@@ -39,20 +39,30 @@ const articleRoutes = require("./routes/articleRoutes");
 app.use("/api/articles", articleRoutes);
 
 // =========================
+// SEARCH ROUTES (Ritik's Module)
+// =========================
+
+const searchRoutes = require("./routes/searchRoutes");
+
+app.use("/api/search", searchRoutes);
+
+// =========================
 // ADMIN ROUTES
 // =========================
 
-const adminRoutes = require("./routes/adminRoutes");
-
-app.use("/api/admin", adminRoutes);
+try {
+  const adminRoutes = require("./routes/adminRoutes");
+  app.use("/api/admin", adminRoutes);
+} catch (err) {}
 
 // =========================
 // AUTH ROUTES
 // =========================
 
-const authRoutes = require("./routes/authRoutes");
-
-app.use("/api/auth", authRoutes);
+try {
+  const authRoutes = require("./routes/authRoutes");
+  app.use("/api/auth", authRoutes);
+} catch (err) {}
 
 // =========================
 // USER ROUTES
@@ -60,22 +70,17 @@ app.use("/api/auth", authRoutes);
 
 try {
   const userRoutes = require("./routes/userRoutes");
-
   app.use("/api/users", userRoutes);
-} catch (err) {
-  console.error(
-    "User routes could not be loaded:",
-    err.message
-  );
-}
+} catch (err) {}
 
 // =========================
 // QUIZ ROUTES
 // =========================
 
-const quizRoutes = require("./routes/quizRoutes");
-
-app.use("/api/quizzes", quizRoutes);
+try {
+  const quizRoutes = require("./routes/quizRoutes");
+  app.use("/api/quizzes", quizRoutes);
+} catch (err) {}
 
 // =========================
 // NOTIFICATION ROUTES
@@ -83,17 +88,8 @@ app.use("/api/quizzes", quizRoutes);
 
 try {
   const notificationRoutes = require("./routes/notificationRoutes");
-
-  app.use(
-    "/api/notifications",
-    notificationRoutes
-  );
-} catch (err) {
-  console.error(
-    "Notification routes could not be loaded:",
-    err.message
-  );
-}
+  app.use("/api/notifications", notificationRoutes);
+} catch (err) {}
 
 // =========================
 // CHAT ROUTES
@@ -110,8 +106,7 @@ app.use("/api/chat", chatRoutes);
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "OK",
-    message:
-      "Lumen CMS Backend (Articles & Content Module) is running",
+    message: "Lumen CMS Backend (Articles & Search Module) is running",
   });
 });
 

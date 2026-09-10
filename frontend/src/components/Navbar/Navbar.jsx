@@ -305,20 +305,32 @@ const fetchChatUnreadCount = async () => {
             `navigation-button ${isActive ? "active" : ""}`
           }
         >
-          <FiSearch />
+          <FiBookOpen />
           <span>Browse</span>
+        </NavLink>
+
+        {/* Search */}
+        <NavLink
+          to="/search"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiSearch />
+          <span>Search</span>
         </NavLink>
 
         {/* Chat */}
         <NavLink
-            to="/chat"
-            className={({ isActive }) =>
-              `navigation-button ${isActive ? "active" : ""}`
-        }
-      >
-         <FiMessageCircle />
+          to="/chat"
+          className={({ isActive }) =>
+            `navigation-button ${isActive ? "active" : ""}`
+          }
+        >
+          <FiMessageCircle />
           <span>Chat</span>
-       </NavLink>
+        </NavLink>
+
 
         {/* AUTHOR → WRITE */}
         {currentRole === "Author" && (
